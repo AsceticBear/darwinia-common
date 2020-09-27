@@ -15,6 +15,7 @@ members = [
 	"frame/bridge/relayer-game",
 	"frame/bridge/tron/backing",
 	"frame/democracy",
+	"frame/evm",
 	"frame/elections-phragmen",
 	"frame/header-mmr",
 	"frame/header-mmr/rpc",
