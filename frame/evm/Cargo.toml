@@ -18,7 +18,7 @@ sp-runtime    = { default-features = false, git = "https://github.com/darwinia-n
 sp-std        = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 sp-core       = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 pallet-timestamp  = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
-darwinia-balances = { path = "../balances" }
+darwinia-balances = { path = "../balances" , default-features = false}
 primitive-types = { version = "0.7.0", default-features = false, features = ["rlp", "byteorder"] }
 rlp = { version = "0.4", default-features = false }
 evm = { version = "0.17", default-features = false }
@@ -32,16 +32,17 @@ default = ["std"]
 std = [
 	"serde",
 	"codec/std",
-	"sp-core/std",
-	"sp-runtime/std",
 	"frame-support/std",
 	"frame-system/std",
 	"sp-io/std",
+	"sp-runtime/std",
 	"sp-std/std",
-	"sha3/std",
-	"rlp/std",
-	"primitive-types/std",
-	"evm/std",
+	"sp-core/std",
 	"pallet-timestamp/std",
+	"darwinia-balances/std",
+	"primitive-types/std",
+	"rlp/std",
+	"evm/std",
+	"sha3/std",
 	"ripemd160/std",
 ]

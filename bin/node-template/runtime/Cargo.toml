@@ -21,6 +21,7 @@ darwinia-claims                     = { default-features = false, path = "../../
 darwinia-crab-backing               = { default-features = false, path = "../../../frame/bridge/crab/backing" }
 darwinia-crab-issuing               = { default-features = false, path = "../../../frame/bridge/crab/issuing" }
 darwinia-democracy                  = { default-features = false, path = "../../../frame/democracy" }
+darwinia-evm                  		= { default-features = false, path = "../../../frame/evm" }
 darwinia-elections-phragmen         = { default-features = false, path = "../../../frame/elections-phragmen" }
 darwinia-ethereum-backing           = { default-features = false, path = "../../../frame/bridge/ethereum/backing" }
 darwinia-ethereum-relay             = { default-features = false, path = "../../../frame/bridge/ethereum/relay" }
@@ -101,6 +102,7 @@ std = [
 	"darwinia-treasury/std",
 	"darwinia-tron-backing/std",
 	"darwinia-vesting/std",
+	"darwinia-evm/std",
 	"ethereum-primitives/std",
 	"frame-executive/std",
 	"frame-support/std",
