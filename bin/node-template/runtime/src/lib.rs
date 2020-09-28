@@ -400,6 +400,8 @@ use darwinia_staking::EraIndex;
 use darwinia_staking_rpc_runtime_api::RuntimeDispatchInfo as StakingRuntimeDispatchInfo;
 use impls::*;
 
+use darwinia_evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
+
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("node-template"),
@@ -615,6 +617,31 @@ impl darwinia_staking::Trait for Runtime {
 	type Cap = Cap;
 	type TotalPower = TotalPower;
 	type WeightInfo = ();
+}
+
+use sp_core::U256;
+pub struct FixedGasPrice;
+
+impl FeeCalculator for FixedGasPrice {
+	fn min_gas_price() -> U256 {
+		// Gas price is always one token per gas.
+		1.into()
+	}
+}
+
+parameter_types! {
+	pub const ChainId: u64 = 43;
+}
+
+impl darwinia_evm::Trait for Runtime {
+	type FeeCalculator = FixedGasPrice;
+	type CallOrigin = EnsureAddressTruncated;
+	type WithdrawOrigin = EnsureAddressTruncated;
+	type AddressMapping = HashedAddressMapping<BlakeTwo256>;
+	type Currency = Balances;
+	type Event = Event;
+	type Precompiles = ();
+	type ChainId = ChainId;
 }
 
 parameter_types! {
@@ -1033,6 +1060,8 @@ construct_runtime!(
 		TronBacking: darwinia_tron_backing::{Module, Storage, Config<T>},
 
 		HeaderMMR: darwinia_header_mmr::{Module, Call, Storage},
+
+		EVM: darwinia_evm::{Module, Config, Call, Storage, Event<T>},
 	}
 );
 
