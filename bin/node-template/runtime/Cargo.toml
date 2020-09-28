@@ -73,6 +73,10 @@ sp-std                                     = { default-features = false, git = "
 sp-transaction-pool                        = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 sp-version                                 = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 
+# evm
+ethereum = { version = "0.1.0", default-features = false, package = "pallet-ethereum", git = "https://github.com/paritytech/frontier.git"}
+frontier-rpc-primitives = { default-features = false, git = "https://github.com/paritytech/frontier.git" }
+
 [build-dependencies]
 # substrate
 wasm-builder-runner = { package = "substrate-wasm-builder-runner", git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
@@ -139,4 +143,6 @@ std = [
 	"sp-std/std",
 	"sp-transaction-pool/std",
 	"sp-version/std",
+	"ethereum/std",
+	"frontier-rpc-primitives/std",
 ]
