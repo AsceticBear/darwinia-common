@@ -2371,9 +2371,24 @@ dependencies = [
 [[package]]
 name = "frontier-consensus-primitives"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier.git#98f9ce8b90ceefb5b95303d71b739ff57f94a8e2"
+source = "git+https://github.com/AsceticBear/frontier.git#c28889948362bf7b2ece8e9cf65a60415baa47d4"
 dependencies = [
  "parity-scale-codec",
+ "sp-core 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "frontier-rpc-primitives"
+version = "0.1.0"
+source = "git+https://github.com/AsceticBear/frontier.git#c28889948362bf7b2ece8e9cf65a60415baa47d4"
+dependencies = [
+ "ethereum",
+ "ethereum-types 0.9.2",
+ "pallet-evm",
+ "parity-scale-codec",
+ "sp-api 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-core 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-runtime 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-std 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
@@ -4425,7 +4440,7 @@ dependencies = [
  "frame-support 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
  "frame-system 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
  "frame-system-rpc-runtime-api",
- "frontier-rpc-primitives",
+ "frontier-rpc-primitives 0.1.0 (git+https://github.com/paritytech/frontier.git)",
  "pallet-authority-discovery",
  "pallet-authorship",
  "pallet-babe",
@@ -4720,7 +4735,7 @@ dependencies = [
 [[package]]
 name = "pallet-ethereum"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier.git#98f9ce8b90ceefb5b95303d71b739ff57f94a8e2"
+source = "git+https://github.com/AsceticBear/frontier.git#c28889948362bf7b2ece8e9cf65a60415baa47d4"
 dependencies = [
  "ethereum",
  "ethereum-types 0.9.2",
@@ -4728,7 +4743,7 @@ dependencies = [
  "frame-support 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "frame-system 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "frontier-consensus-primitives",
- "frontier-rpc-primitives",
+ "frontier-rpc-primitives 0.1.0 (git+https://github.com/AsceticBear/frontier.git)",
  "libsecp256k1",
  "pallet-balances 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "pallet-evm",

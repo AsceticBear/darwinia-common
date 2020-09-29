@@ -74,7 +74,7 @@ sp-transaction-pool                        = { default-features = false, git = "
 sp-version                                 = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 
 # evm
-ethereum = { version = "0.1.0", default-features = false, package = "pallet-ethereum", git = "https://github.com/paritytech/frontier.git"}
+ethereum = { version = "0.1.0", default-features = false, package = "pallet-ethereum", git = "https://github.com/AsceticBear/frontier.git"}
 frontier-rpc-primitives = { default-features = false, git = "https://github.com/paritytech/frontier.git" }
 
 [build-dependencies]
