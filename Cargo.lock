@@ -1379,28 +1379,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "darwinia-evm"
-version = "1.0.0-beta.1"
-dependencies = [
- "darwinia-balances",
- "evm",
- "frame-support 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "frame-system 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "impl-trait-for-tuples",
- "pallet-timestamp 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "parity-scale-codec",
- "primitive-types 0.7.2",
- "ripemd160",
- "rlp 0.4.5",
- "serde",
- "sha3 0.8.2",
- "sp-core 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "sp-io 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "sp-runtime 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
- "sp-std 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
-]
-
-[[package]]
 name = "darwinia-header-mmr"
 version = "1.0.0"
 dependencies = [
@@ -2386,7 +2364,7 @@ source = "git+https://github.com/AsceticBear/frontier.git#c28889948362bf7b2ece8e
 dependencies = [
  "ethereum",
  "ethereum-types 0.9.2",
- "pallet-evm",
+ "pallet-evm 2.0.0-rc6",
  "parity-scale-codec",
  "sp-api 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-core 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
@@ -2401,7 +2379,7 @@ source = "git+https://github.com/paritytech/frontier.git#98f9ce8b90ceefb5b95303d
 dependencies = [
  "ethereum",
  "ethereum-types 0.9.2",
- "pallet-evm",
+ "pallet-evm 2.0.0-rc6",
  "parity-scale-codec",
  "sp-api 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-core 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
@@ -4358,7 +4336,6 @@ dependencies = [
  "darwinia-claims",
  "darwinia-cli",
  "darwinia-ethereum-relay",
- "darwinia-evm",
  "darwinia-header-mmr-rpc",
  "darwinia-header-mmr-rpc-runtime-api",
  "darwinia-staking",
@@ -4370,6 +4347,7 @@ dependencies = [
  "jsonrpc-pubsub",
  "log",
  "node-template-runtime",
+ "pallet-evm 1.0.0-beta.1",
  "pallet-im-online",
  "pallet-transaction-payment-rpc",
  "pallet-transaction-payment-rpc-runtime-api",
@@ -4424,7 +4402,6 @@ dependencies = [
  "darwinia-elections-phragmen",
  "darwinia-ethereum-backing",
  "darwinia-ethereum-relay",
- "darwinia-evm",
  "darwinia-header-mmr",
  "darwinia-header-mmr-rpc-runtime-api",
  "darwinia-relay-primitives",
@@ -4446,6 +4423,7 @@ dependencies = [
  "pallet-babe",
  "pallet-collective",
  "pallet-ethereum",
+ "pallet-evm 1.0.0-beta.1",
  "pallet-finality-tracker",
  "pallet-grandpa",
  "pallet-im-online",
@@ -4746,7 +4724,7 @@ dependencies = [
  "frontier-rpc-primitives 0.1.0 (git+https://github.com/AsceticBear/frontier.git)",
  "libsecp256k1",
  "pallet-balances 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
- "pallet-evm",
+ "pallet-evm 2.0.0-rc6",
  "pallet-timestamp 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "parity-scale-codec",
  "rlp 0.4.5",
@@ -4756,6 +4734,28 @@ dependencies = [
  "sp-io 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-runtime 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-std 2.0.0-rc6 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "pallet-evm"
+version = "1.0.0-beta.1"
+dependencies = [
+ "darwinia-balances",
+ "evm",
+ "frame-support 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "frame-system 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "impl-trait-for-tuples",
+ "pallet-timestamp 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "parity-scale-codec",
+ "primitive-types 0.7.2",
+ "ripemd160",
+ "rlp 0.4.5",
+ "serde",
+ "sha3 0.8.2",
+ "sp-core 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "sp-io 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "sp-runtime 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
+ "sp-std 2.0.0-rc6 (git+https://github.com/darwinia-network/substrate.git?branch=common-library)",
 ]
 
 [[package]]

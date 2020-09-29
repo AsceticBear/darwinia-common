@@ -33,7 +33,7 @@ darwinia-ethereum-relay             = { path = "../../../frame/bridge/ethereum/r
 darwinia-header-mmr-rpc             = { path = "../../../frame/header-mmr/rpc" }
 darwinia-header-mmr-rpc-runtime-api = { path = "../../../frame/header-mmr/rpc/runtime-api" }
 darwinia-staking                    = { path = "../../../frame/staking" }
-darwinia-evm                    	= { path = "../../../frame/evm" }
+pallet-evm                    	= { path = "../../../frame/evm" }
 darwinia-staking-rpc                = { path = "../../../frame/staking/rpc" }
 darwinia-staking-rpc-runtime-api    = { path = "../../../frame/staking/rpc/runtime-api" }
 # substrate

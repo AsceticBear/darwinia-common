@@ -219,6 +219,7 @@ where
 	let rpc_setup = shared_voter_state.clone();
 	let babe_config = babe_link.config().clone();
 	let shared_epoch_changes = babe_link.epoch_changes().clone();
+	let is_authority = config.role.is_authority();
 	let rpc_extensions_builder = {
 		let client = client.clone();
 		let keystore = keystore.clone();
@@ -231,6 +232,7 @@ where
 				pool: transaction_pool.clone(),
 				select_chain: select_chain.clone(),
 				deny_unsafe,
+				is_authority,
 				babe: BabeDeps {
 					babe_config: babe_config.clone(),
 					shared_epoch_changes: shared_epoch_changes.clone(),

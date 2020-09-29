@@ -356,11 +356,12 @@ use static_assertions::const_assert;
 // --- substrate ---
 use frame_support::{
 	construct_runtime, debug, parameter_types,
-	traits::{KeyOwnerProofSystem, LockIdentifier, Randomness},
+	traits::{FindAuthor, KeyOwnerProofSystem, LockIdentifier, Randomness},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 		Weight,
 	},
+	ConsensusEngineId,
 };
 use frame_system::{EnsureOneOf, EnsureRoot};
 use pallet_grandpa::{
@@ -388,7 +389,7 @@ use sp_runtime::{
 	RuntimeDebug,
 };
 use sp_staking::SessionIndex;
-use sp_std::prelude::*;
+use sp_std::{marker::PhantomData, prelude::*};
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
@@ -400,7 +401,13 @@ use darwinia_staking::EraIndex;
 use darwinia_staking_rpc_runtime_api::RuntimeDispatchInfo as StakingRuntimeDispatchInfo;
 use impls::*;
 
-use darwinia_evm::{Account as EVMAccount, FeeCalculator, HashedAddressMapping, EnsureAddressTruncated};
+use pallet_evm::{
+	Account as EVMAccount, EnsureAddressTruncated, FeeCalculator, HashedAddressMapping,
+};
+use ethereum::{
+	Block as EthereumBlock, Receipt as EthereumReceipt, Transaction as EthereumTransaction,
+};
+use frontier_rpc_primitives::TransactionStatus;
 
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
@@ -619,7 +626,7 @@ impl darwinia_staking::Trait for Runtime {
 	type WeightInfo = ();
 }
 
-use sp_core::U256;
+use sp_core::{H160, H256, U256};
 pub struct FixedGasPrice;
 
 impl FeeCalculator for FixedGasPrice {
@@ -633,7 +640,7 @@ parameter_types! {
 	pub const ChainId: u64 = 43;
 }
 
-impl darwinia_evm::Trait for Runtime {
+impl pallet_evm::Trait for Runtime {
 	type FeeCalculator = FixedGasPrice;
 	type CallOrigin = EnsureAddressTruncated;
 	type WithdrawOrigin = EnsureAddressTruncated;
@@ -642,6 +649,49 @@ impl darwinia_evm::Trait for Runtime {
 	type Event = Event;
 	type Precompiles = ();
 	type ChainId = ChainId;
+}
+
+pub struct EthereumFindAuthor<F>(PhantomData<F>);
+impl<F: FindAuthor<u32>> FindAuthor<H160> for EthereumFindAuthor<F> {
+	fn find_author<'a, I>(digests: I) -> Option<H160>
+	where
+		I: 'a + IntoIterator<Item = (ConsensusEngineId, &'a [u8])>,
+	{
+		if let Some(author_index) = F::find_author(digests) {
+			let authority_id = Babe::authorities()[author_index as usize].clone();
+			return Some(H160::from_slice(&authority_id.to_raw_vec()[4..24]));
+		}
+		None
+	}
+}
+
+impl ethereum::Trait for Runtime {
+	type Event = Event;
+	type FindAuthor = EthereumFindAuthor<Babe>;
+}
+
+pub struct TransactionConverter;
+
+impl frontier_rpc_primitives::ConvertTransaction<UncheckedExtrinsic> for TransactionConverter {
+	fn convert_transaction(&self, transaction: ethereum::Transaction) -> UncheckedExtrinsic {
+		UncheckedExtrinsic::new_unsigned(ethereum::Call::<Runtime>::transact(transaction).into())
+	}
+}
+
+impl frontier_rpc_primitives::ConvertTransaction<opaque::UncheckedExtrinsic>
+	for TransactionConverter
+{
+	fn convert_transaction(
+		&self,
+		transaction: ethereum::Transaction,
+	) -> opaque::UncheckedExtrinsic {
+		let extrinsic = UncheckedExtrinsic::new_unsigned(
+			ethereum::Call::<Runtime>::transact(transaction).into(),
+		);
+		let encoded = extrinsic.encode();
+		opaque::UncheckedExtrinsic::decode(&mut &encoded[..])
+			.expect("Encoded extrinsic is always valid")
+	}
 }
 
 parameter_types! {
@@ -1061,7 +1111,8 @@ construct_runtime!(
 
 		HeaderMMR: darwinia_header_mmr::{Module, Call, Storage},
 
-		EVM: darwinia_evm::{Module, Config, Call, Storage, Event<T>},
+		EVM: pallet_evm::{Module, Config, Call, Storage, Event<T>},
+		Ethereum: ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
 	}
 );
 
@@ -1312,6 +1363,84 @@ impl_runtime_apis! {
 	impl darwinia_staking_rpc_runtime_api::StakingApi<Block, AccountId, Power> for Runtime {
 		fn power_of(account: AccountId) -> StakingRuntimeDispatchInfo<Power> {
 			Staking::power_of_rpc(account)
+		}
+	}
+
+	impl frontier_rpc_primitives::EthereumRuntimeRPCApi<Block> for Runtime {
+		fn chain_id() -> u64 {
+			ChainId::get()
+		}
+
+		fn account_basic(address: H160) -> EVMAccount {
+			EVM::account_basic(&address)
+		}
+
+		fn gas_price() -> U256 {
+			FixedGasPrice::min_gas_price()
+		}
+
+		fn account_code_at(address: H160) -> Vec<u8> {
+			EVM::account_codes(address)
+		}
+
+		fn author() -> H160 {
+			<ethereum::Module<Runtime>>::find_author()
+		}
+
+		fn storage_at(address: H160, index: U256) -> H256 {
+			let mut tmp = [0u8; 32];
+			index.to_big_endian(&mut tmp);
+			EVM::account_storages(address, H256::from_slice(&tmp[..]))
+		}
+
+		fn call(
+			from: H160,
+			data: Vec<u8>,
+			value: U256,
+			gas_limit: U256,
+			gas_price: Option<U256>,
+			nonce: Option<U256>,
+			action: ethereum::TransactionAction,
+		) -> Result<(Vec<u8>, U256), sp_runtime::DispatchError> {
+			match action {
+				ethereum::TransactionAction::Call(to) =>
+					EVM::execute_call(
+						from,
+						to,
+						data,
+						value,
+						gas_limit.low_u32(),
+						gas_price.unwrap_or_default(),
+						nonce,
+						false,
+					)
+					.map(|(_, ret, gas)| (ret, gas))
+					.map_err(|err| err.into()),
+				ethereum::TransactionAction::Create =>
+					EVM::execute_create(
+						from,
+						data,
+						value,
+						gas_limit.low_u32(),
+						gas_price.unwrap_or_default(),
+						nonce,
+						false,
+					)
+					.map(|(_, _, gas)| (vec![], gas))
+					.map_err(|err| err.into()),
+			}
+		}
+
+		fn current_transaction_statuses() -> Option<Vec<TransactionStatus>> {
+			Ethereum::current_transaction_statuses()
+		}
+
+		fn current_block() -> Option<ethereum::Block> {
+			Ethereum::current_block()
+		}
+
+		fn current_receipts() -> Option<Vec<ethereum::Receipt>> {
+			Ethereum::current_receipts()
 		}
 	}
 }

@@ -63,6 +63,8 @@ pub struct FullDeps<C, P, SC> {
 	pub select_chain: SC,
 	/// Whether to deny unsafe calls
 	pub deny_unsafe: sc_rpc_api::DenyUnsafe,
+	/// The Node authority flag
+	pub is_authority: bool,
 	/// BABE specific dependencies.
 	pub babe: BabeDeps,
 	/// GRANDPA specific dependencies.
@@ -95,6 +97,7 @@ where
 	C::Api: darwinia_balances_rpc::BalancesRuntimeApi<Block, AccountId, Balance>,
 	C::Api: darwinia_header_mmr_rpc::HeaderMMRRuntimeApi<Block, Hash>,
 	C::Api: darwinia_staking_rpc::StakingRuntimeApi<Block, AccountId, Power>,
+	C::Api: frontier_rpc_primitives::EthereumRuntimeApi<Block>,
 	P: 'static + sp_transaction_pool::TransactionPool,
 	SC: 'static + sp_consensus::SelectChain<Block>,
 {
@@ -107,12 +110,15 @@ where
 	use darwinia_balances_rpc::{Balances, BalancesApi};
 	use darwinia_header_mmr_rpc::{HeaderMMR, HeaderMMRApi};
 	use darwinia_staking_rpc::{Staking, StakingApi};
+	// --- evm ---
+	use frontier_rpc::{EthApi, EthApiServer};
 
 	let FullDeps {
 		client,
 		pool,
 		select_chain,
 		deny_unsafe,
+		is_authority,
 		babe,
 		grandpa,
 	} = deps;
@@ -160,6 +166,13 @@ where
 	io.extend_with(BalancesApi::to_delegate(Balances::new(client.clone())));
 	io.extend_with(HeaderMMRApi::to_delegate(HeaderMMR::new(client.clone())));
 	io.extend_with(StakingApi::to_delegate(Staking::new(client)));
+	io.extend_with(EthApiServer::to_delegate(EthApi::new(
+		client.clone(),
+		select_chain,
+		pool.clone(),
+		crab_runtime::TransactionConverter,
+		is_authority,
+	)));
 
 	io
 }
