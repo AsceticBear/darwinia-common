@@ -4423,6 +4423,7 @@ dependencies = [
  "frame-system",
  "frame-system-rpc-runtime-api",
  "frontier-rpc-primitives",
+ "log",
  "pallet-authority-discovery",
  "pallet-authorship",
  "pallet-babe",
