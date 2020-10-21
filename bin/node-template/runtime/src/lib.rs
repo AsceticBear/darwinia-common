@@ -409,12 +409,11 @@ use impls::*;
 
 // dvm
 use dvm_rpc_primitives::TransactionStatus;
-use frame_evm::AddressMapping;
 use frame_evm::{
-	precompiles::Precompile, Account as EVMAccount, EnsureAddressTruncated, ExitError, ExitSucceed,
+	Account as EVMAccount, EnsureAddressTruncated,
 	FeeCalculator,
 };
-use frame_support::traits::ExistenceRequirement;
+use frame_ethereum::precompiles::{ConcatAddressMapping, NativeTransfer};
 
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
@@ -1059,7 +1058,7 @@ impl frame_evm::Trait for Runtime {
 		frame_evm::precompiles::Sha256,
 		frame_evm::precompiles::Ripemd160,
 		frame_evm::precompiles::Identity,
-		NativeTransfer,
+		NativeTransfer<Self>,
 	);
 	type ChainId = ChainId;
 }
@@ -1077,6 +1076,8 @@ impl<F: FindAuthor<u32>> FindAuthor<H160> for EthereumFindAuthor<F> {
 		None
 	}
 }
+
+
 
 impl frame_ethereum::Trait for Runtime {
 	type Event = Event;
