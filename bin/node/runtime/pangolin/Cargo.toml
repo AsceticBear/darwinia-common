@@ -41,6 +41,7 @@ drml-primitives                     = { default-features = false, path = "../../
 dvm-ethereum                        = { default-features = false, path = "../../../../frame/dvm" }
 dvm-rpc-runtime-api                  = { default-features = false, path = "../../../../frame/dvm/rpc/runtime-api" }
 ethereum-primitives                 = { default-features = false, path = "../../../../primitives/ethereum-primitives" }
+dvm-rpc-core-primitives 			= { default-features = false, path = "../../../../primitives/dvm-rpc-core" }
 # substrate
 frame-executive                            = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 frame-support                              = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
@@ -112,6 +113,7 @@ std     = [
 	"drml-primitives/std",
 	"dvm-ethereum/std",
 	"dvm-rpc-runtime-api/std",
+	"dvm-rpc-core-primitives/std",
 	"ethereum-primitives/std",
 	"frame-executive/std",
 	"frame-support/std",

@@ -272,7 +272,7 @@ use dvm_ethereum::{
 	account_basic::DVMAccountBasicMapping,
 	precompiles::{ConcatAddressMapping, NativeTransfer},
 };
-use dvm_rpc_runtime_api::TransactionStatus;
+use dvm_rpc_core_primitives::TransactionStatus;
 use impls::*;
 
 /// The address format for describing accounts.

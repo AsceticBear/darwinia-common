@@ -18,6 +18,7 @@ ethereum-types = { version = "0.9", default-features = false }
 # darwinia
 darwinia-evm              = { default-features = false, path = "../../../evm" }
 darwinia-evm-primitives   = { default-features = false, path = "../../../../primitives/evm" }
+dvm-rpc-core-primitives   = { default-features = false, path = "../../../../primitives/dvm-rpc-core" }
 # substrate
 sp-api     = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 sp-core    = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
@@ -35,7 +36,8 @@ std = [
 
 darwinia-std  = [
 	"darwinia-evm/std",
-	"darwinia-evm-primitives/std"
+	"darwinia-evm-primitives/std",
+	"dvm-rpc-core-primitives/std"
 ]
 crates-std    = [
 	"codec/std",

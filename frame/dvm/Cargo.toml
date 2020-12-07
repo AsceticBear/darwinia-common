@@ -26,7 +26,8 @@ darwinia-evm             = { default-features = false, path = "../evm" }
 darwinia-evm-primitives  = { default-features = false, path = "../../primitives/evm"}
 darwinia-support         = { default-features = false, path = "../support" }
 dvm-consensus-primitives = { default-features = false, path = "../../primitives/consensus" }
-dvm-rpc-runtime-api       = { default-features = false, path = "./rpc/runtime-api" }
+dvm-rpc-core-primitives = { default-features = false, path = "../../primitives/dvm-rpc-core" }
+dvm-rpc-runtime-api      = { default-features = false, path = "./rpc/runtime-api" }
 # substrate
 frame-support    = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
 frame-system     = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", branch = "common-library" }
@@ -66,6 +67,7 @@ darwinia-std  = [
 	"darwinia-evm-primitives/std",
 	"darwinia-support/std",
 	"dvm-consensus-primitives/std",
+	"dvm-rpc-core-primitives/std",
 	"dvm-rpc-runtime-api/std",
 ]
 substrate-std = [

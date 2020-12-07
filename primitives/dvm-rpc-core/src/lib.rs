@@ -28,6 +28,7 @@ mod receipt;
 mod sync;
 mod transaction;
 mod transaction_request;
+mod transaction_status;
 mod work;
 
 pub mod pubsub;
@@ -51,4 +52,5 @@ pub use self::sync::{
 };
 pub use self::transaction::{LocalTransactionStatus, RichRawTransaction, Transaction};
 pub use self::transaction_request::TransactionRequest;
+pub use self::transaction_status::TransactionStatus;
 pub use self::work::Work;
