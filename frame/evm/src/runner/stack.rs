@@ -104,8 +104,7 @@ impl<T: Trait> Runner<T> {
 
 		let used_gas = U256::from(executor.used_gas());
 		let actual_fee = executor.fee(gas_price);
-		debug::debug!(
-			target: "evm",
+		debug::info!(
 			"Execution {:?} [source: {:?}, value: {}, gas_limit: {}, actual_fee: {}]",
 			reason,
 			source,
@@ -316,6 +315,8 @@ impl<'vicinity, T: Trait> ApplyBackend for Backend<'vicinity, T> {
 					storage,
 					reset_storage,
 				} => {
+					debug::info!("bear: --- enter the Apply modify");
+					debug::info!("bear: --- content, address {:?}, basic {:?}, code {:?}", address, basic, code);
 					T::AccountBasicMapping::mutate_account_basic(
 						&address,
 						Account {

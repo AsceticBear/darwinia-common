@@ -143,6 +143,7 @@ impl<'vicinity, T: Trait> ApplyBackend for Backend<'vicinity, T> {
 		L: IntoIterator<Item = evm::backend::Log>,
 	{
 		for apply in values {
+			debug::info!("bear: --- apply values {:?}", apply);
 			match apply {
 				Apply::Modify {
 					address,

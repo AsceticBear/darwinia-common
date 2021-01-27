@@ -1,0 +1,199 @@
+Jan 27 21:12:12.437  WARN Running in --dev mode, RPC CORS has been disabled.    
+Jan 27 21:12:12.437  INFO Darwinia Runtime Module Library    
+Jan 27 21:12:12.437  INFO ✌️  version 1.0.10-e3184069f-x86_64-linux-gnu    
+Jan 27 21:12:12.437  INFO ❤️  by Darwinia Network <hello@darwinia.network>, 2018-2021    
+Jan 27 21:12:12.437  INFO 📋 Chain specification: Development    
+Jan 27 21:12:12.437  INFO 🏷 Node name: gigantic-respect-8428    
+Jan 27 21:12:12.437  INFO 👤 Role: AUTHORITY    
+Jan 27 21:12:12.437  INFO 💾 Database: RocksDb at /tmp/substratePtBvWx/chains/pangolin_dev/db    
+Jan 27 21:12:12.437  INFO ⛓  Native runtime: Pangolin-10 (Pangolin-1.tx1.au1)    
+Jan 27 21:12:12.531 ERROR `pallet_timestamp::UnixTime::now` is called at genesis, invalid value returned: 0    
+Jan 27 21:12:12.532  INFO 💸 new validator set of size 1 has been elected via ElectionCompute::OnChain for era 0    
+Jan 27 21:12:12.532  INFO 💸 new validator set of size 1 has been elected via ElectionCompute::OnChain for era 1    
+Jan 27 21:12:12.532 ERROR [darwinia-claims] Genesis Claims List is Set to EMPTY    
+Jan 27 21:12:12.532  INFO bear: --- enter mutate account basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, new Basic { balance: 123456789000000000090, nonce: 0 }    
+Jan 27 21:12:12.532  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:12.532  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:12.532  INFO bear: --- current basic info Basic { balance: 0, nonce: 0 }    
+Jan 27 21:12:12.532  INFO bear: --- enter mutate account basic, address 0xb90168c8cbcd351d069fffda7b71cd846924d551, new Basic { balance: 123456789000000000090, nonce: 0 }    
+Jan 27 21:12:12.532  INFO bear: --- enter account_basic, address 0xb90168c8cbcd351d069fffda7b71cd846924d551    
+Jan 27 21:12:12.532  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:12.532  INFO bear: --- current basic info Basic { balance: 0, nonce: 0 }    
+Jan 27 21:12:12.546  INFO 🔨 Initializing Genesis block/state (state: 0x222b…b124, header-hash: 0x7557…2017)    
+Jan 27 21:12:12.552  INFO 👴 Loading GRANDPA authority set from genesis on what appears to be first startup.    
+Jan 27 21:12:12.706  INFO ⏱  Loaded block-time = 6000 milliseconds from genesis on first-launch    
+Jan 27 21:12:12.706  INFO 👶 Creating empty BABE epoch changes on what appears to be first startup.    
+Jan 27 21:12:12.706  WARN Using default protocol ID "sup" because none is configured in the chain specs    
+Jan 27 21:12:12.706  INFO 🏷 Local node identity is: 12D3KooWBxReWXgCK3Ym7rXA9XEX4qbFimArHM7BqgCAudCASoCZ    
+Jan 27 21:12:12.732  INFO 📦 Highest known block at #0    
+Jan 27 21:12:12.732  INFO 〽️ Prometheus server started at 127.0.0.1:9615    
+Jan 27 21:12:12.733  INFO Listening for new connections on 127.0.0.1:9944.    
+Jan 27 21:12:12.733  INFO 👶 Starting BABE Authorship worker    
+Jan 27 21:12:14.232  INFO Accepted a new tcp connection from 127.0.0.1:42180.    
+Jan 27 21:12:15.743  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:15.743  INFO bear: --- get balance from currency, 123456789000    
+Jan 27 21:12:15.777  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:15.777  INFO bear: --- get balance from currency, 123456789000    
+Jan 27 21:12:17.733  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m0[0m (0x7557…2017), finalized #[1;37m0[0m (0x7557…2017), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:18.015  INFO 🙌 Starting consensus session on top of parent 0x755734d5c96c6dd18a7fb6a13e5a72486291534b439f80fbd3ee90a7ccbd2017    
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- get balance from currency, 123456789000    {ext}
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- get balance from currency, 123456789000    {ext}
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:12:18.054  INFO apply_extrinsic: bear: --- get balance from currency, 123456789000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- get balance from currency, 0    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- the input data dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...)    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- the input data value 3000000000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- the context value Context { address: 0x0000000000000000000000000000000000000005, caller: 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, apparent_value: 3000000000000000000 }    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- before transfer, from 64766d3a000000000000006be02d1d3665660d22ff9624b7be0551ee1ac91bd2 (5ELRpquT...), balance 123456789000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- before transfer, dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...), balance 0    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- before transfer, from 64766d3a000000000000006be02d1d3665660d22ff9624b7be0551ee1ac91bd2 (5ELRpquT...), balance 123456789000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- before transfer, dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...), balance 3000000000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: Execution Succeed(Returned) [source: 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, value: 3000000000000000000, gas_limit: 705032704, actual_fee: 0]    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter the Apply modify    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- content, address 0x0000000000000000000000000000000000000005, basic Basic { balance: 3000000000000000000, nonce: 0 }, code None    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter mutate account basic, address 0x0000000000000000000000000000000000000005, new Basic { balance: 3000000000000000000, nonce: 0 }    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- get balance from currency, 0    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- current basic info Basic { balance: 0, nonce: 0 }    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- get balance from currency, 3000000000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter the Apply modify    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- content, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, basic Basic { balance: 120456789000000000090, nonce: 1 }, code None    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter mutate account basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, new Basic { balance: 120456789000000000090, nonce: 1 }    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- get balance from currency, 123456789000    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- current basic info Basic { balance: 123456789000000000090, nonce: 0 }    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:12:18.055  INFO apply_extrinsic: bear: --- get balance from currency, 120456789000    {ext}
+Jan 27 21:12:18.063  INFO 🎁 Prepared block for proposing at 1 [hash: 0xa26653e95be0ddb6a4f49facbda1ffad6b2f1d1abebe94a74b3f0237b821be2a; parent_hash: 0x7557…2017; extrinsics (2): [0x5570…c256, 0xac67…84bd]]    
+Jan 27 21:12:18.067  INFO 🔖 Pre-sealed block for proposal at 1. Hash now 0x46c9dfa144be0fe1afec940f882238e4500dfe064dfff049bd04443a661d8624, previously 0xa26653e95be0ddb6a4f49facbda1ffad6b2f1d1abebe94a74b3f0237b821be2a.    
+Jan 27 21:12:18.067  INFO 👶 New epoch 0 launching at block 0x46c9…8624 (block slot 268625523 >= start slot 268625523).    
+Jan 27 21:12:18.067  INFO 👶 Next epoch starts at slot 268625623    
+Jan 27 21:12:18.068  INFO ✨ Imported #[1;37m1[0m (0x46c9…8624)    
+Jan 27 21:12:22.733  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m1[0m (0x46c9…8624), finalized #[1;37m0[0m (0x7557…2017), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:23.053  INFO bear: --- enter account_basic, address 0xaa01a1bef0557fa9625581a293f3aa7770192632    
+Jan 27 21:12:23.053  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:23.054  INFO bear: --- enter account_basic, address 0xa3503704240f764cf91faba1775754b42fd2040f    
+Jan 27 21:12:23.054  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:23.062  INFO bear: --- enter account_basic, address 0xb3a77a84e132465530cdb5738203eb00215d780b    
+Jan 27 21:12:23.062  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:23.062  INFO bear: --- enter account_basic, address 0xcbda615767cebf8ed9de475f1eef37086ac7d8b6    
+Jan 27 21:12:23.062  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:23.063  INFO bear: --- enter account_basic, address 0x68898db1012808808c903f390909c52d9f706749    
+Jan 27 21:12:23.063  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:23.063  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:23.063  INFO bear: --- get balance from currency, 120456789000    
+Jan 27 21:12:24.004  INFO 🙌 Starting consensus session on top of parent 0x46c9dfa144be0fe1afec940f882238e4500dfe064dfff049bd04443a661d8624    
+Jan 27 21:12:24.006  INFO 🎁 Prepared block for proposing at 2 [hash: 0x6e61119baaacb35036e035daa32ad83b4af6e89fa7d2670bafe5beacb60aa566; parent_hash: 0x46c9…8624; extrinsics (1): [0xc299…fac2]]    
+Jan 27 21:12:24.009  INFO 🔖 Pre-sealed block for proposal at 2. Hash now 0x02cf0951b03701456ad038e33dab30836bba9898960f9c04d47c7d2c9bd8da07, previously 0x6e61119baaacb35036e035daa32ad83b4af6e89fa7d2670bafe5beacb60aa566.    
+Jan 27 21:12:24.010  INFO ✨ Imported #[1;37m2[0m (0x02cf…da07)    
+Jan 27 21:12:27.733  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m2[0m (0x02cf…da07), finalized #[1;37m0[0m (0x7557…2017), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:30.005  INFO 🙌 Starting consensus session on top of parent 0x02cf0951b03701456ad038e33dab30836bba9898960f9c04d47c7d2c9bd8da07    
+Jan 27 21:12:30.008  INFO 🎁 Prepared block for proposing at 3 [hash: 0x0b8ee1ff3e9dc3f0bcc54de8a0441715a41727b1c82dde32138d37e8273ca28f; parent_hash: 0x02cf…da07; extrinsics (1): [0xd3f9…ea20]]    
+Jan 27 21:12:30.012  INFO 🔖 Pre-sealed block for proposal at 3. Hash now 0x99ef93c14e3e99d7b7f1c9aad25704b49bba2d3f741dcf68af9aab5efe30b1ec, previously 0x0b8ee1ff3e9dc3f0bcc54de8a0441715a41727b1c82dde32138d37e8273ca28f.    
+Jan 27 21:12:30.012  INFO ✨ Imported #[1;37m3[0m (0x99ef…b1ec)    
+Jan 27 21:12:32.733  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m3[0m (0x99ef…b1ec), finalized #[1;37m0[0m (0x7557…2017), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:36.005  INFO 🙌 Starting consensus session on top of parent 0x99ef93c14e3e99d7b7f1c9aad25704b49bba2d3f741dcf68af9aab5efe30b1ec    
+Jan 27 21:12:36.008  INFO 🎁 Prepared block for proposing at 4 [hash: 0xa1a9d9b4723da263e4413c04465046df57c692d4dda545a2284ddce74bc381d9; parent_hash: 0x99ef…b1ec; extrinsics (2): [0x2253…c8f4, 0x3af6…b467]]    
+Jan 27 21:12:36.013  INFO 🔖 Pre-sealed block for proposal at 4. Hash now 0xbdcf27f0bcc7e1286d932d496be6bb3b1b077c95c57720dcf61a955f4fa6e241, previously 0xa1a9d9b4723da263e4413c04465046df57c692d4dda545a2284ddce74bc381d9.    
+Jan 27 21:12:36.013  INFO ✨ Imported #[1;37m4[0m (0xbdcf…e241)    
+Jan 27 21:12:37.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m4[0m (0xbdcf…e241), finalized #[1;37m1[0m (0x46c9…8624), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:42.005  INFO 🙌 Starting consensus session on top of parent 0xbdcf27f0bcc7e1286d932d496be6bb3b1b077c95c57720dcf61a955f4fa6e241    
+Jan 27 21:12:42.008  INFO 🎁 Prepared block for proposing at 5 [hash: 0xf342e7eabe6aba4709af2960f7af70e4d9f9372b4bc12198f45716176d575e04; parent_hash: 0xbdcf…e241; extrinsics (2): [0x9e73…bb46, 0x353b…ba3d]]    
+Jan 27 21:12:42.013  INFO 🔖 Pre-sealed block for proposal at 5. Hash now 0x3f3607df0660729216684afe489e70adc8b8fe4dc5a03f56a36e5e91bde9c7e4, previously 0xf342e7eabe6aba4709af2960f7af70e4d9f9372b4bc12198f45716176d575e04.    
+Jan 27 21:12:42.013  INFO ✨ Imported #[1;37m5[0m (0x3f36…c7e4)    
+Jan 27 21:12:42.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m5[0m (0x3f36…c7e4), finalized #[1;37m2[0m (0x02cf…da07), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:43.079  INFO bear: --- enter account_basic, address 0xaa01a1bef0557fa9625581a293f3aa7770192632    
+Jan 27 21:12:43.079  INFO bear: --- enter account_basic, address 0xa3503704240f764cf91faba1775754b42fd2040f    
+Jan 27 21:12:43.079  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:43.079  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:43.081  INFO bear: --- enter account_basic, address 0xb3a77a84e132465530cdb5738203eb00215d780b    
+Jan 27 21:12:43.081  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:43.081  INFO bear: --- enter account_basic, address 0xcbda615767cebf8ed9de475f1eef37086ac7d8b6    
+Jan 27 21:12:43.082  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:43.085  INFO bear: --- enter account_basic, address 0x68898db1012808808c903f390909c52d9f706749    
+Jan 27 21:12:43.085  INFO bear: --- get balance from currency, 0    
+Jan 27 21:12:43.086  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:43.086  INFO bear: --- get balance from currency, 120456789000    
+Jan 27 21:12:47.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m5[0m (0x3f36…c7e4), finalized #[1;37m3[0m (0x99ef…b1ec), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:48.005  INFO 🙌 Starting consensus session on top of parent 0x3f3607df0660729216684afe489e70adc8b8fe4dc5a03f56a36e5e91bde9c7e4    
+Jan 27 21:12:48.007  INFO 🎁 Prepared block for proposing at 6 [hash: 0x6b667ec66d95671293f85481290f1396eb3016fe8b3c3386d48f623f3369f175; parent_hash: 0x3f36…c7e4; extrinsics (2): [0xc8f3…1007, 0x1704…a6bf]]    
+Jan 27 21:12:48.012  INFO 🔖 Pre-sealed block for proposal at 6. Hash now 0xc25868c60e0ab8808d5538c55e9a92069d3290144da0c3fd0901a0a3dc25333c, previously 0x6b667ec66d95671293f85481290f1396eb3016fe8b3c3386d48f623f3369f175.    
+Jan 27 21:12:48.012  INFO ✨ Imported #[1;37m6[0m (0xc258…333c)    
+Jan 27 21:12:52.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m6[0m (0xc258…333c), finalized #[1;37m3[0m (0x99ef…b1ec), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:12:54.006  INFO 🙌 Starting consensus session on top of parent 0xc25868c60e0ab8808d5538c55e9a92069d3290144da0c3fd0901a0a3dc25333c    
+Jan 27 21:12:54.007  INFO 🎁 Prepared block for proposing at 7 [hash: 0x7a515c693f74ba6b48981c145f3f0b7839577b7acee15c6600742dcc0a3a41a5; parent_hash: 0xc258…333c; extrinsics (2): [0x65bc…ca47, 0xe922…2ed6]]    
+Jan 27 21:12:54.010  INFO 🔖 Pre-sealed block for proposal at 7. Hash now 0xfe65d9cf44ff549d3a22f2a8dab74bdc759cd3d3ac09e0bd6077855ab00956b1, previously 0x7a515c693f74ba6b48981c145f3f0b7839577b7acee15c6600742dcc0a3a41a5.    
+Jan 27 21:12:54.010  INFO ✨ Imported #[1;37m7[0m (0xfe65…56b1)    
+Jan 27 21:12:55.060  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:55.061  INFO bear: --- get balance from currency, 120456789000    
+Jan 27 21:12:55.076  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:12:55.076  INFO bear: --- get balance from currency, 120456789000    
+Jan 27 21:12:57.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m7[0m (0xfe65…56b1), finalized #[1;37m5[0m (0x3f36…c7e4), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:13:00.005  INFO 🙌 Starting consensus session on top of parent 0xfe65d9cf44ff549d3a22f2a8dab74bdc759cd3d3ac09e0bd6077855ab00956b1    
+Jan 27 21:13:00.006  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:13:00.006  INFO apply_extrinsic: bear: --- get balance from currency, 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 3000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- the input data dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...)    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- the input data value 3000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- the context value Context { address: 0x0000000000000000000000000000000000000005, caller: 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, apparent_value: 3000000000000000000 }    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- before transfer, from 64766d3a000000000000006be02d1d3665660d22ff9624b7be0551ee1ac91bd2 (5ELRpquT...), balance 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- before transfer, dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...), balance 3000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- before transfer, from 64766d3a000000000000006be02d1d3665660d22ff9624b7be0551ee1ac91bd2 (5ELRpquT...), balance 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- before transfer, dest 723908ee9dc8e509d4b93251bd57f68c09bd9d04471c193fabd8f26c54284a4b (5EeUFyFj...), balance 6000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: Execution Succeed(Returned) [source: 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, value: 3000000000000000000, gas_limit: 705032704, actual_fee: 0]    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter the Apply modify    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- content, address 0x0000000000000000000000000000000000000005, basic Basic { balance: 6000000000000000000, nonce: 0 }, code None    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter mutate account basic, address 0x0000000000000000000000000000000000000005, new Basic { balance: 6000000000000000000, nonce: 0 }    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 3000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- current basic info Basic { balance: 3000000000000000000, nonce: 0 }    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x0000000000000000000000000000000000000005    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 6000000000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter the Apply modify    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- content, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, basic Basic { balance: 117456789000000000090, nonce: 2 }, code None    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter mutate account basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b, new Basic { balance: 117456789000000000090, nonce: 2 }    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 120456789000    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- current basic info Basic { balance: 120456789000000000090, nonce: 1 }    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    {ext}
+Jan 27 21:13:00.007  INFO apply_extrinsic: bear: --- get balance from currency, 117456789000    {ext}
+Jan 27 21:13:00.009  INFO 🎁 Prepared block for proposing at 8 [hash: 0x0b69fbbd66696457296fbb78e9b7cb82994a6c8b3d89eb8ae1d477b4d779903d; parent_hash: 0xfe65…56b1; extrinsics (3): [0xf9f9…28d3, 0xcfa7…5b85, 0x59d6…fa90]]    
+Jan 27 21:13:00.012  INFO 🔖 Pre-sealed block for proposal at 8. Hash now 0xd7395fec384928ec00daee527a71bead3b32e132bdafe75160dae175c0d39323, previously 0x0b69fbbd66696457296fbb78e9b7cb82994a6c8b3d89eb8ae1d477b4d779903d.    
+Jan 27 21:13:00.012  INFO ✨ Imported #[1;37m8[0m (0xd739…9323)    
+Jan 27 21:13:02.734  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m8[0m (0xd739…9323), finalized #[1;37m5[0m (0x3f36…c7e4), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:13:03.088  INFO bear: --- enter account_basic, address 0xaa01a1bef0557fa9625581a293f3aa7770192632    
+Jan 27 21:13:03.089  INFO bear: --- get balance from currency, 0    
+Jan 27 21:13:03.090  INFO bear: --- enter account_basic, address 0xa3503704240f764cf91faba1775754b42fd2040f    
+Jan 27 21:13:03.090  INFO bear: --- get balance from currency, 0    
+Jan 27 21:13:03.090  INFO bear: --- enter account_basic, address 0xb3a77a84e132465530cdb5738203eb00215d780b    
+Jan 27 21:13:03.090  INFO bear: --- get balance from currency, 0    
+Jan 27 21:13:03.094  INFO bear: --- enter account_basic, address 0xcbda615767cebf8ed9de475f1eef37086ac7d8b6    
+Jan 27 21:13:03.094  INFO bear: --- get balance from currency, 0    
+Jan 27 21:13:03.094  INFO bear: --- enter account_basic, address 0x6be02d1d3665660d22ff9624b7be0551ee1ac91b    
+Jan 27 21:13:03.094  INFO bear: --- get balance from currency, 117456789000    
+Jan 27 21:13:03.095  INFO bear: --- enter account_basic, address 0x68898db1012808808c903f390909c52d9f706749    
+Jan 27 21:13:03.095  INFO bear: --- get balance from currency, 0    
+Jan 27 21:13:06.004  INFO 🙌 Starting consensus session on top of parent 0xd7395fec384928ec00daee527a71bead3b32e132bdafe75160dae175c0d39323    
+Jan 27 21:13:06.006  INFO 🎁 Prepared block for proposing at 9 [hash: 0xc0a0b60b75dce786c3ac66de2baf2987a8f662125005a3f4cd342dd5d68556b9; parent_hash: 0xd739…9323; extrinsics (2): [0x3ee1…f303, 0x1254…7cbc]]    
+Jan 27 21:13:06.009  INFO 🔖 Pre-sealed block for proposal at 9. Hash now 0x929cbb773991890802786e0b549ec284b39b3510bf482fae6c5e49faf6dccde9, previously 0xc0a0b60b75dce786c3ac66de2baf2987a8f662125005a3f4cd342dd5d68556b9.    
+Jan 27 21:13:06.010  INFO ✨ Imported #[1;37m9[0m (0x929c…cde9)    
+Jan 27 21:13:07.735  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m9[0m (0x929c…cde9), finalized #[1;37m6[0m (0xc258…333c), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:13:12.005  INFO 🙌 Starting consensus session on top of parent 0x929cbb773991890802786e0b549ec284b39b3510bf482fae6c5e49faf6dccde9    
+Jan 27 21:13:12.006  INFO 🎁 Prepared block for proposing at 10 [hash: 0xa116193fce3cdb4f82f6b8e545e994bacc21adfba0c40bebd79b591ac3f63e2c; parent_hash: 0x929c…cde9; extrinsics (2): [0x4efe…4b6b, 0xd14b…ff4c]]    
+Jan 27 21:13:12.009  INFO 🔖 Pre-sealed block for proposal at 10. Hash now 0x467f9f44ad3f14fb47c7f1afdfbb7830e22c7a038e6c3fb9d5c25438134ed56f, previously 0xa116193fce3cdb4f82f6b8e545e994bacc21adfba0c40bebd79b591ac3f63e2c.    
+Jan 27 21:13:12.009  INFO ✨ Imported #[1;37m10[0m (0x467f…d56f)    
+Jan 27 21:13:12.735  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m10[0m (0x467f…d56f), finalized #[1;37m7[0m (0xfe65…56b1), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:13:17.735  INFO 💤 [1;37mIdle[0m ([1;37m0[0m peers), best: #[1;37m10[0m (0x467f…d56f), finalized #[1;37m8[0m (0xd739…9323), [32m⬇ 0[0m [31m⬆ 0[0m    
+Jan 27 21:13:18.005  INFO 🙌 Starting consensus session on top of parent 0x467f9f44ad3f14fb47c7f1afdfbb7830e22c7a038e6c3fb9d5c25438134ed56f    
+Jan 27 21:13:18.007  INFO 🎁 Prepared block for proposing at 11 [hash: 0x796d23343b1d966fc586c6ad04c419b97920d73aaeabec2bd012675708db76fa; parent_hash: 0x467f…d56f; extrinsics (2): [0x6bec…cf7a, 0xc0f1…c0a7]]    
+Jan 27 21:13:18.012  INFO 🔖 Pre-sealed block for proposal at 11. Hash now 0x76e2ced5408d1d3b72ac96b2b821280155bc3e96fa425c42e65c376eefdd2bfb, previously 0x796d23343b1d966fc586c6ad04c419b97920d73aaeabec2bd012675708db76fa.    
+Jan 27 21:13:18.012  INFO ✨ Imported #[1;37m11[0m (0x76e2…2bfb)    

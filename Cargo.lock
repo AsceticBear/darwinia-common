@@ -1502,6 +1502,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "darwinia-evm-precompile-withdraw"
+version = "1.3.0"
+dependencies = [
+ "darwinia-balances",
+ "darwinia-evm",
+ "darwinia-evm-primitives",
+ "darwinia-support",
+ "evm",
+ "frame-support",
+ "frame-system",
+ "hex",
+ "hex-literal",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "ripemd160",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 2.0.0",
+]
+
+[[package]]
 name = "darwinia-evm-primitives"
 version = "1.3.0"
 dependencies = [
@@ -5177,6 +5199,7 @@ dependencies = [
  "darwinia-ethereum-relay",
  "darwinia-evm",
  "darwinia-evm-precompile-simple",
+ "darwinia-evm-precompile-withdraw",
  "darwinia-header-mmr",
  "darwinia-header-mmr-rpc-runtime-api",
  "darwinia-relay-authorities",
