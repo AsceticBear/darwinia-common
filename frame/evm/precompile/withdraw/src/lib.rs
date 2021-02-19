@@ -19,7 +19,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use frame_support::traits::{Currency, ExistenceRequirement};
-use sp_core::U256;
+use sp_core::{U256, H160};
 use sp_runtime::traits::UniqueSaturatedInto;
 use sp_std::marker::PhantomData;
 use sp_std::prelude::*;
@@ -31,6 +31,8 @@ use darwinia_evm_primitives::Precompile;
 use evm::{Context, ExitError, ExitSucceed};
 
 type AccountId<T> = <T as frame_system::Trait>::AccountId;
+
+use frame_support::debug;
 
 /// WithDraw Precompile Contract, used to withdraw balance from evm account to darwinia account
 ///
@@ -55,12 +57,25 @@ impl<T: Trait> Precompile for WithDraw<T> {
 	) -> core::result::Result<(ExitSucceed, Vec<u8>, usize), ExitError> {
 		// Decode input data
 		let input = InputData::<T>::decode(&input)?;
+		debug::info!("bear: -- the input account {:?}", input.dest);
+		debug::info!("bear: -- the input value {:?}", input.value);
+		debug::info!("bear: -- the context info {:?}", context);
 
 		let helper = U256::from(10)
 			.checked_pow(U256::from(9))
 			.unwrap_or(U256::MAX);
 		let value = input.value.saturating_mul(helper);
 		let from_address = T::AddressMapping::into_account_id(context.caller);
+		
+		use sp_std::str::FromStr;
+		let precompile_evm = H160::from_str("0000000000000000000000000000000000000005").unwrap();
+		let precompile_sub = T::AddressMapping::into_account_id(precompile_evm);
+		let precompile_balance = <T as Trait>::Currency::free_balance(&precompile_sub);
+		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
+		let dest_balance = <T as Trait>::Currency::free_balance(&input.dest);
+		debug::info!("bear: --- before transfer, from {:?}, balance {:?}", from_address, from_balance);
+		debug::info!("bear: --- before transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
+		debug::info!("bear: --- before transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
 
 		let result = T::Currency::transfer(
 			&from_address,
@@ -68,6 +83,13 @@ impl<T: Trait> Precompile for WithDraw<T> {
 			value.low_u128().unique_saturated_into(),
 			ExistenceRequirement::AllowDeath,
 		);
+
+		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
+		let dest_balance = <T as Trait>::Currency::free_balance(&input.dest);
+		let precompile_balance = <T as Trait>::Currency::free_balance(&precompile_sub);
+		debug::info!("bear: --- after transfer, from {:?}, balance {:?}", from_address, from_balance);
+		debug::info!("bear: --- after transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
+		debug::info!("bear: --- after transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
 
 		match result {
 			Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
@@ -93,17 +115,20 @@ pub struct InputData<T: frame_system::Trait> {
 
 impl<T: frame_system::Trait> InputData<T> {
 	pub fn decode(data: &[u8]) -> Result<Self, ExitError> {
-		if data.len() == 96 {
+		debug::info!("bear: -- the data {:?}, data len {:?}", data, data.len());
+		if data.len() == 64 {
 			let mut dest_bytes = [0u8; 32];
-			dest_bytes.copy_from_slice(&data[32..64]);
-
+			dest_bytes.copy_from_slice(&data[0..32]);
+			debug::info!("bear: -- the dest bytes {:?}", dest_bytes) ;
+			
 			let mut value_bytes = [0u8; 32];
-			value_bytes.copy_from_slice(&data[64..96]);
+			value_bytes.copy_from_slice(&data[32..64]);
+			debug::info!("bear: -- the value bytes {:?}", value_bytes) ;
 
 			return Ok(InputData {
 				dest: <T as frame_system::Trait>::AccountId::decode(&mut dest_bytes.as_ref())
 					.map_err(|_| ExitError::Other("Invalid destination address".into()))?,
-				value: U256::from_little_endian(&value_bytes),
+				value: U256::from_big_endian(&value_bytes),
 			});
 		}
 		Err(ExitError::Other("Invalid input data length".into()))
