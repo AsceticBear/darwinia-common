@@ -58,13 +58,13 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		// Decode input data
 		let input = InputData::<T>::decode(&input)?;
 		debug::info!("bear: -- the input account {:?}", input.dest);
-		debug::info!("bear: -- the input value {:?}", input.value);
+		// debug::info!("bear: -- the input value {:?}", input.value);
 		debug::info!("bear: -- the context info {:?}", context);
 
 		let helper = U256::from(10)
 			.checked_pow(U256::from(9))
 			.unwrap_or(U256::MAX);
-		let value = input.value.saturating_mul(helper);
+		// let value = input.value.saturating_mul(helper);
 		let from_address = T::AddressMapping::into_account_id(context.caller);
 		
 		use sp_std::str::FromStr;
@@ -77,11 +77,21 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		debug::info!("bear: --- before transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
 		debug::info!("bear: --- before transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
 
-		let result = T::Currency::transfer(
-			&from_address,
-			&input.dest,
-			value.low_u128().unique_saturated_into(),
-			ExistenceRequirement::AllowDeath,
+		// let result = T::Currency::transfer(
+		// 	&from_address,
+		// 	&input.dest,
+		// 	value.low_u128().unique_saturated_into(),
+		// 	ExistenceRequirement::AllowDeath,
+		// );
+		let (context_value, _) = context.apparent_value.div_mod(helper);
+		let context_value = context_value.low_u128().unique_saturated_into();
+
+		// Slash precompile value
+		T::Currency::slash(&precompile_sub, context_value);
+		// Deposit create withdrawal target address
+		T::Currency::deposit_creating(
+			&&input.dest,
+			context_value,
 		);
 
 		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
@@ -91,44 +101,45 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		debug::info!("bear: --- after transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
 		debug::info!("bear: --- after transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
 
-		match result {
-			Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
-			Err(error) => match error {
-				sp_runtime::DispatchError::BadOrigin => Err(ExitError::Other("BadOrigin".into())),
-				sp_runtime::DispatchError::CannotLookup => {
-					Err(ExitError::Other("CannotLookup".into()))
-				}
-				sp_runtime::DispatchError::Other(message) => Err(ExitError::Other(message.into())),
-				sp_runtime::DispatchError::Module { message, .. } => {
-					Err(ExitError::Other(message.unwrap_or("Module Error").into()))
-				}
-			},
-		}
+		// match result {
+		// 	Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
+			// Err(error) => match error {
+			// 	sp_runtime::DispatchError::BadOrigin => Err(ExitError::Other("BadOrigin".into())),
+			// 	sp_runtime::DispatchError::CannotLookup => {
+			// 		Err(ExitError::Other("CannotLookup".into()))
+			// 	}
+			// 	sp_runtime::DispatchError::Other(message) => Err(ExitError::Other(message.into())),
+			// 	sp_runtime::DispatchError::Module { message, .. } => {
+			// 		Err(ExitError::Other(message.unwrap_or("Module Error").into()))
+			// 	}
+			// },
+		// }
+		Ok((ExitSucceed::Returned, vec![], 10000))
 	}
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct InputData<T: frame_system::Trait> {
 	pub dest: AccountId<T>,
-	pub value: U256,
+	// pub value: U256,
 }
 
 impl<T: frame_system::Trait> InputData<T> {
 	pub fn decode(data: &[u8]) -> Result<Self, ExitError> {
 		debug::info!("bear: -- the data {:?}, data len {:?}", data, data.len());
-		if data.len() == 64 {
+		if data.len() == 32 {
 			let mut dest_bytes = [0u8; 32];
 			dest_bytes.copy_from_slice(&data[0..32]);
 			debug::info!("bear: -- the dest bytes {:?}", dest_bytes) ;
 			
-			let mut value_bytes = [0u8; 32];
-			value_bytes.copy_from_slice(&data[32..64]);
-			debug::info!("bear: -- the value bytes {:?}", value_bytes) ;
+			// let mut value_bytes = [0u8; 32];
+			// value_bytes.copy_from_slice(&data[32..64]);
+			// debug::info!("bear: -- the value bytes {:?}", value_bytes) ;
 
 			return Ok(InputData {
 				dest: <T as frame_system::Trait>::AccountId::decode(&mut dest_bytes.as_ref())
 					.map_err(|_| ExitError::Other("Invalid destination address".into()))?,
-				value: U256::from_big_endian(&value_bytes),
+				// value: U256::from_big_endian(&value_bytes),
 			});
 		}
 		Err(ExitError::Other("Invalid input data length".into()))
