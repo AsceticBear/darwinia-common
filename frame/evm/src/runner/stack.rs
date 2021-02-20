@@ -525,6 +525,11 @@ impl<'vicinity, 'config, T: Trait> StackStateT<'config>
 			},
 		);
 
+		let source_account = T::AccountBasicMapping::account_basic(&transfer.source);
+		let target_account = T::AccountBasicMapping::account_basic(&transfer.target);
+		debug::info!("bear: ------ Darwinia stack runner transfer after, source account{:?}", source_account);
+		debug::info!("bear: ------ Darwinia stack runner transfer after, target account{:?}", target_account);
+
 		Ok(())
 	}
 
