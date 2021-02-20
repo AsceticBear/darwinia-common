@@ -90,15 +90,22 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		let (context_value, _) = context.apparent_value.div_mod(helper);
 		let context_value = context_value.low_u128().unique_saturated_into();
 
-		ensure!(contract_balance >= context_value, ExitError::Other("The contract balance should larger than context value".into()));
+		// ensure!(contract_balance >= context_value, ExitError::Other("The contract balance should larger than context value".into()));
 		// Slash precompile value
-		T::Currency::slash(&contract_address, context_value);
-		ensure!(<T as Trait>::Currency::free_balance(&contract_address) == 0u128.unique_saturated_into(), ExitError::Other("The contract balance should be zero after slash".into()));
-		// Deposit create withdrawal target address
-		T::Currency::deposit_creating(
-			&&input.dest,
+		// T::Currency::slash(&contract_address, context_value);
+		// ensure!(<T as Trait>::Currency::free_balance(&contract_address) == 0u128.unique_saturated_into(), ExitError::Other("The contract balance should be zero after slash".into()));
+		// // Deposit create withdrawal target address
+		// T::Currency::deposit_creating(
+		// 	&&input.dest,
+		// 	context_value,
+		// );
+		let result = T::Currency::transfer(
+			&contract_address,
+			&input.dest,
 			context_value,
+			ExistenceRequirement::AllowDeath,
 		);
+		ensure!(<T as Trait>::Currency::free_balance(&contract_address) == 0u128.unique_saturated_into(), ExitError::Other("The contract balance should be zero after slash".into()));
 
 		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
 		let dest_balance = <T as Trait>::Currency::free_balance(&input.dest);
@@ -107,20 +114,19 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		debug::info!("bear: --- after transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
 		debug::info!("bear: --- after transfer, cons {:?}, balance {:?}", context.address, contract_balance);
 
-		// match result {
-		// 	Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
-			// Err(error) => match error {
-			// 	sp_runtime::DispatchError::BadOrigin => Err(ExitError::Other("BadOrigin".into())),
-			// 	sp_runtime::DispatchError::CannotLookup => {
-			// 		Err(ExitError::Other("CannotLookup".into()))
-			// 	}
-			// 	sp_runtime::DispatchError::Other(message) => Err(ExitError::Other(message.into())),
-			// 	sp_runtime::DispatchError::Module { message, .. } => {
-			// 		Err(ExitError::Other(message.unwrap_or("Module Error").into()))
-			// 	}
-			// },
-		// }
-		Ok((ExitSucceed::Returned, vec![], 10000))
+		match result {
+			Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
+			Err(error) => match error {
+				sp_runtime::DispatchError::BadOrigin => Err(ExitError::Other("BadOrigin".into())),
+				sp_runtime::DispatchError::CannotLookup => {
+					Err(ExitError::Other("CannotLookup".into()))
+				}
+				sp_runtime::DispatchError::Other(message) => Err(ExitError::Other(message.into())),
+				sp_runtime::DispatchError::Module { message, .. } => {
+					Err(ExitError::Other(message.unwrap_or("Module Error").into()))
+				}
+			},
+		}
 	}
 }
 
