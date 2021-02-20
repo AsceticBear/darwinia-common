@@ -24,10 +24,14 @@ pub use sc_executor::NativeExecutor;
 pub use pangolin_runtime;
 
 // --- std ---
-use std::{sync::Arc, time::Duration};
+use std::{
+	collections::HashMap,
+	sync::{Arc, Mutex},
+	time::Duration,
+};
 // --- substrate ---
 use sc_basic_authorship::ProposerFactory;
-use sc_client_api::{ExecutorProvider, RemoteBackend, StateBackendFor};
+use sc_client_api::{BlockchainEvents, ExecutorProvider, RemoteBackend, StateBackendFor};
 use sc_consensus::LongestChain;
 use sc_consensus_babe::{BabeBlockImport, BabeLink, BabeParams, Config as BabeConfig};
 use sc_executor::{native_executor_instance, NativeExecutionDispatch};
@@ -59,6 +63,7 @@ use crate::rpc::{
 };
 use drml_primitives::{AccountId, Balance, Hash, Nonce, OpaqueBlock as Block, Power};
 use dvm_consensus::FrontierBlockImport;
+use dvm_rpc_core_primitives::PendingTransactions;
 
 type FullBackend = sc_service::TFullBackend<Block>;
 type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
@@ -194,6 +199,7 @@ fn new_partial<RuntimeApi, Executor>(
 				GrandpaSharedVoterState,
 				Arc<GrandpaFinalityProofProvider<FullBackend, Block>>,
 			),
+			PendingTransactions,
 		),
 	>,
 	ServiceError,
@@ -218,6 +224,7 @@ where
 		task_manager.spawn_handle(),
 		client.clone(),
 	);
+	let pending_transactions: PendingTransactions = Some(Arc::new(Mutex::new(HashMap::new())));
 	let grandpa_hard_forks = vec![];
 	let (grandpa_block_import, grandpa_link) =
 		sc_finality_grandpa::block_import_with_authority_set_hard_forks(
@@ -262,6 +269,7 @@ where
 		let keystore = keystore.clone();
 		let transaction_pool = transaction_pool.clone();
 		let select_chain = select_chain.clone();
+		let pending = pending_transactions.clone();
 
 		move |deny_unsafe, is_authority, network, subscription_executor| -> RpcExtension {
 			let deps = FullDeps {
@@ -271,6 +279,7 @@ where
 				deny_unsafe,
 				is_authority,
 				network,
+				pending_transactions: pending.clone(),
 				babe: BabeDeps {
 					babe_config: babe_config.clone(),
 					shared_epoch_changes: shared_epoch_changes.clone(),
@@ -298,7 +307,12 @@ where
 		import_queue,
 		transaction_pool,
 		inherent_data_providers,
-		other: (rpc_extensions_builder, import_setup, rpc_setup),
+		other: (
+			rpc_extensions_builder,
+			import_setup,
+			rpc_setup,
+			pending_transactions,
+		),
 	})
 }
 
@@ -327,7 +341,7 @@ where
 		import_queue,
 		transaction_pool,
 		inherent_data_providers,
-		other: (rpc_extensions_builder, import_setup, rpc_setup),
+		other: (rpc_extensions_builder, import_setup, rpc_setup, pending_transactions),
 	} = new_partial::<RuntimeApi, Executor>(&mut config)?;
 	let prometheus_registry = config.prometheus_registry().cloned();
 	let (shared_voter_state, finality_proof_provider) = rpc_setup;
@@ -385,6 +399,53 @@ where
 		network_status_sinks,
 		system_rpc_tx,
 	})?;
+
+	// Spawn Frontier pending transactions maintenance task (as essential, otherwise we leak).
+	if pending_transactions.is_some() {
+		use dvm_consensus_primitives::{ConsensusLog, FRONTIER_ENGINE_ID};
+		use futures::StreamExt;
+		use sp_runtime::generic::OpaqueDigestItemId;
+
+		const TRANSACTION_RETAIN_THRESHOLD: u64 = 5;
+		task_manager.spawn_essential_handle().spawn(
+			"frontier-pending-transactions",
+			client
+				.import_notification_stream()
+				.for_each(move |notification| {
+					if let Ok(locked) = &mut pending_transactions.clone().unwrap().lock() {
+						// As pending transactions have a finite lifespan anyway
+						// we can ignore MultiplePostRuntimeLogs error checks.
+						let mut frontier_log: Option<_> = None;
+						for log in notification.header.digest.logs {
+							let log = log.try_to::<ConsensusLog>(OpaqueDigestItemId::Consensus(
+								&FRONTIER_ENGINE_ID,
+							));
+							if let Some(log) = log {
+								frontier_log = Some(log);
+							}
+						}
+
+						let imported_number: u64 = notification.header.number as u64;
+
+						if let Some(ConsensusLog::EndBlock {
+							block_hash: _,
+							transaction_hashes,
+						}) = frontier_log
+						{
+							// Retain all pending transactions that were not
+							// processed in the current block.
+							locked.retain(|&k, _| !transaction_hashes.contains(&k));
+						}
+						locked.retain(|_, v| {
+							// Drop all the transactions that exceeded the given lifespan.
+							let lifespan_limit = v.at_block + TRANSACTION_RETAIN_THRESHOLD;
+							lifespan_limit > imported_number
+						});
+					}
+					futures::future::ready(())
+				}),
+		);
+	}
 
 	let (block_import, link_half, babe_link) = import_setup;
 
