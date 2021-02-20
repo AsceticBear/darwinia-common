@@ -18,7 +18,7 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use frame_support::traits::{Currency, ExistenceRequirement};
+use frame_support::{ensure, traits::{Currency, ExistenceRequirement}};
 use sp_core::{U256, H160};
 use sp_runtime::traits::UniqueSaturatedInto;
 use sp_std::marker::PhantomData;
@@ -69,13 +69,17 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		
 		use sp_std::str::FromStr;
 		let precompile_evm = H160::from_str("0000000000000000000000000000000000000005").unwrap();
+		let deploy_contract_evm = H160::from_str("fca29754bb5d5a60f96cfba820f7e76a8e1b6f97").unwrap();
 		let precompile_sub = T::AddressMapping::into_account_id(precompile_evm);
+		let deploy_contract_sub = T::AddressMapping::into_account_id(deploy_contract_evm);
 		let precompile_balance = <T as Trait>::Currency::free_balance(&precompile_sub);
+		let deploy_contract_balance = <T as Trait>::Currency::free_balance(&deploy_contract_sub);
 		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
 		let dest_balance = <T as Trait>::Currency::free_balance(&input.dest);
 		debug::info!("bear: --- before transfer, from {:?}, balance {:?}", from_address, from_balance);
 		debug::info!("bear: --- before transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
 		debug::info!("bear: --- before transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
+		debug::info!("bear: --- before transfer, cons {:?}, balance {:?}", deploy_contract_evm, deploy_contract_balance);
 
 		// let result = T::Currency::transfer(
 		// 	&from_address,
@@ -86,6 +90,7 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		let (context_value, _) = context.apparent_value.div_mod(helper);
 		let context_value = context_value.low_u128().unique_saturated_into();
 
+		ensure!(precompile_balance >= context_value, ExitError::Other("Invalid balance".into()));
 		// Slash precompile value
 		T::Currency::slash(&precompile_sub, context_value);
 		// Deposit create withdrawal target address
@@ -97,9 +102,11 @@ impl<T: Trait> Precompile for WithDraw<T> {
 		let from_balance = <T as Trait>::Currency::free_balance(&from_address);
 		let dest_balance = <T as Trait>::Currency::free_balance(&input.dest);
 		let precompile_balance = <T as Trait>::Currency::free_balance(&precompile_sub);
+		let deploy_contract_balance = <T as Trait>::Currency::free_balance(&deploy_contract_sub);
 		debug::info!("bear: --- after transfer, from {:?}, balance {:?}", from_address, from_balance);
 		debug::info!("bear: --- after transfer, dest {:?}, balance {:?}", input.dest, dest_balance);
 		debug::info!("bear: --- after transfer, prec {:?}, balance {:?}", precompile_evm, precompile_balance);
+		debug::info!("bear: --- after transfer, cons {:?}, balance {:?}", deploy_contract_evm, deploy_contract_balance);
 
 		// match result {
 		// 	Ok(()) => Ok((ExitSucceed::Returned, vec![], 10000)),
