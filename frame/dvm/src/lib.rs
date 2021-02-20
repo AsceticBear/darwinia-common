@@ -141,6 +141,9 @@ decl_module! {
 		/// Transact an Ethereum transaction.
 		#[weight = <T as darwinia_evm::Trait>::GasWeightMapping::gas_to_weight(transaction.gas_limit.unique_saturated_into())]
 		fn transact(origin, transaction: ethereum::Transaction) -> DispatchResultWithPostInfo {
+			use frame_support::debug;
+			debug::info!("bear: --- the transact process here, tx {:?}", transaction);
+			
 			ensure_none(origin)?;
 
 			let source = Self::recover_signer(&transaction)

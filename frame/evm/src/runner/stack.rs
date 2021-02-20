@@ -91,18 +91,19 @@ impl<T: Trait> Runner<T> {
 			Error::<T>::BalanceLow
 		);
 
+		debug::info!("bear: --- withdraw process, source {:?}, fee {:?}", source, total_fee);
 		Module::<T>::withdraw_fee(&source, total_fee);
-
+		
 		if let Some(nonce) = nonce {
 			ensure!(source_account.nonce == nonce, Error::<T>::InvalidNonce);
 		}
-
+		
 		let (reason, retv) = f(&mut executor);
-
+		
 		let used_gas = U256::from(executor.used_gas());
 		let actual_fee = executor.fee(gas_price);
-		debug::debug!(
-			target: "evm",
+		debug::info!(
+			// target: "evm",
 			"Execution {:?} [source: {:?}, value: {}, gas_limit: {}, actual_fee: {}]",
 			reason,
 			source,
@@ -111,6 +112,7 @@ impl<T: Trait> Runner<T> {
 			actual_fee
 		);
 		Module::<T>::deposit_fee(&source, total_fee.saturating_sub(actual_fee));
+		debug::info!("bear: --- deposit process, source {:?}, fee {:?}", source, total_fee.saturating_sub(actual_fee));
 
 		let state = executor.into_state();
 
@@ -162,6 +164,7 @@ impl<T: Trait> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CallInfo, Self::Error> {
+		debug::info!("bear: --- Runner call process, source {:?}, target {:?}, input {:?}, value {:?}", source, target, input, value);
 		Self::execute(
 			source,
 			value,
@@ -495,11 +498,17 @@ impl<'vicinity, 'config, T: Trait> StackStateT<'config>
 	}
 
 	fn transfer(&mut self, transfer: Transfer) -> Result<(), ExitError> {
+		debug::info!("bear: ------ Darwinia stack runner transfer, {:?}", transfer);
 		let source_account = T::AccountBasicMapping::account_basic(&transfer.source);
 		let target_account = T::AccountBasicMapping::account_basic(&transfer.target);
-
+		debug::info!("bear: ------ Darwinia stack runner transfer, source account{:?}", source_account);
+		debug::info!("bear: ------ Darwinia stack runner transfer, target account{:?}", target_account);
+		
+		ensure!(source_account.balance >= transfer.value, ExitError::Other("Insufficient balance".into()));
 		let new_source_balance = source_account.balance.saturating_sub(transfer.value);
 		let new_target_balance = target_account.balance.saturating_add(transfer.value);
+		debug::info!("bear: ------ Darwinia stack runner transfer, new source account{:?}", new_source_balance);
+		debug::info!("bear: ------ Darwinia stack runner transfer, new target account{:?}", new_target_balance);
 
 		T::AccountBasicMapping::mutate_account_basic(
 			&transfer.source,
