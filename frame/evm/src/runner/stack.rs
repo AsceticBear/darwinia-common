@@ -26,11 +26,7 @@ use crate::{
 // --- darwinia ---
 use dp_evm::{Account, CallInfo, CreateInfo, ExecutionInfo, Log, Vicinity};
 // --- substrate ---
-use frame_support::{
-	debug, ensure,
-	storage::{StorageDoubleMap, StorageMap},
-	traits::Get,
-};
+use frame_support::{debug::{self, debug}, ensure, storage::{StorageDoubleMap, StorageMap}, traits::Get};
 use sp_core::{H160, H256, U256};
 use sp_runtime::traits::UniqueSaturatedInto;
 use sp_std::{boxed::Box, collections::btree_set::BTreeSet, marker::PhantomData, mem, vec::Vec};
@@ -95,6 +91,7 @@ impl<T: Config> Runner<T> {
 			Error::<T>::BalanceLow
 		);
 
+		debug!("bear: --- check nonce in execute, source account nonce {:?}, execute nonce {:?}", source_account.nonce, nonce);
 		if let Some(nonce) = nonce {
 			ensure!(source_account.nonce == nonce, Error::<T>::InvalidNonce);
 		}
@@ -450,6 +447,8 @@ impl<'vicinity, 'config, T: Config> StackStateT<'config>
 	}
 
 	fn inc_nonce(&mut self, address: H160) {
+		use frame_support::debug;
+		debug::info!("bear: --- inc nonce");
 		let account_id = T::AddressMapping::into_account_id(address);
 		frame_system::Module::<T>::inc_account_nonce(&account_id);
 	}

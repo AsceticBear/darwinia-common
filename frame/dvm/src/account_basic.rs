@@ -52,6 +52,8 @@ impl<T: crate::Config + darwinia_balances::Config<darwinia_balances::Instance0>>
 			.into();
 
 		if current.nonce < new.nonce {
+			use frame_support::debug;
+			debug::info!("bear: --- inc nonce in mutate account basic");
 			// ASSUME: in one single EVM transaction, the nonce will not increase more than
 			// `u128::max_value()`.
 			for _ in 0..(new.nonce - current.nonce).low_u128() {

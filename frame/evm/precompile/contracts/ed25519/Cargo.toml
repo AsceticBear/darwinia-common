@@ -13,7 +13,7 @@ version     = "2.0.0"
 # crates
 dp-evm          = { default-features = false, path = "../../../../../primitives/evm" }
 ed25519-dalek   = { default-features = false, version = "1.0.0",  features = ["alloc", "u64_backend"] }
-evm             = { default-features = false, version = "0.23.0", features = ["with-codec"] }
+evm             = { default-features = false, git = "https://github.com/AsceticBear/evm.git", features = ["with-codec"] }
 # substrate
 sp-core = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", tag = "v2.2.1-darwinia" }
 sp-io   = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", tag = "v2.2.1-darwinia" }
