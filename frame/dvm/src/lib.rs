@@ -298,15 +298,15 @@ impl<T: Config> frame_support::unsigned::ValidateUnsigned for Module<T> {
 				return InvalidTransaction::Stale.into();
 			}
 
-			// let fee = transaction.gas_price.saturating_mul(transaction.gas_limit);
-			// let total_payment = transaction.value.saturating_add(fee);
-			// if account_data.balance < total_payment {
-			// 	return InvalidTransaction::Payment.into();
-			// }
+			let fee = transaction.gas_price.saturating_mul(transaction.gas_limit);
+			let total_payment = transaction.value.saturating_add(fee);
+			if account_data.balance < total_payment {
+				return InvalidTransaction::Payment.into();
+			}
 
-			// if transaction.gas_price < T::FeeCalculator::min_gas_price() {
-			// 	return InvalidTransaction::Payment.into();
-			// }
+			if transaction.gas_price < T::FeeCalculator::min_gas_price() {
+				return InvalidTransaction::Payment.into();
+			}
 
 			let mut builder =
 				ValidTransactionBuilder::default().and_provides((origin, transaction.nonce));

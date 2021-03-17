@@ -87,10 +87,10 @@ impl<T: Config> Runner<T> {
 			.checked_add(total_fee)
 			.ok_or(Error::<T>::PaymentOverflow)?;
 		let source_account = T::AccountBasicMapping::account_basic(&source);
-		// ensure!(
-		// 	source_account.balance >= total_payment,
-		// 	Error::<T>::BalanceLow
-		// );
+		ensure!(
+			source_account.balance >= total_payment,
+			Error::<T>::BalanceLow
+		);
 
 		debug!("bear: --- check nonce in execute, source account nonce {:?}, execute nonce {:?}", source_account.nonce, nonce);
 		if let Some(nonce) = nonce {
