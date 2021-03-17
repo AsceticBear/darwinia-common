@@ -26,7 +26,12 @@ use crate::{
 // --- darwinia ---
 use dp_evm::{Account, CallInfo, CreateInfo, ExecutionInfo, Log, Vicinity};
 // --- substrate ---
-use frame_support::{debug::{self, debug}, ensure, storage::{StorageDoubleMap, StorageMap}, traits::Get};
+use frame_support::{
+	debug::{self, debug},
+	ensure,
+	storage::{StorageDoubleMap, StorageMap},
+	traits::Get,
+};
 use sp_core::{H160, H256, U256};
 use sp_runtime::traits::UniqueSaturatedInto;
 use sp_std::{boxed::Box, collections::btree_set::BTreeSet, marker::PhantomData, mem, vec::Vec};
@@ -57,6 +62,7 @@ impl<T: Config> Runner<T> {
 			&mut StackExecutor<'config, SubstrateStackState<'_, 'config, T>>,
 		) -> (ExitReason, R),
 	{
+		debug::info!("bear: --- enter execute in runner");
 		// Gas price check is skipped when performing a gas estimation.
 		let gas_price = match gas_price {
 			Some(gas_price) => {
@@ -68,7 +74,6 @@ impl<T: Config> Runner<T> {
 			}
 			None => Default::default(),
 		};
-
 
 		let vicinity = Vicinity {
 			gas_price,
@@ -91,11 +96,6 @@ impl<T: Config> Runner<T> {
 			source_account.balance >= total_payment,
 			Error::<T>::BalanceLow
 		);
-
-		debug!("bear: --- check nonce in execute, source account nonce {:?}, execute nonce {:?}", source_account.nonce, nonce);
-		if let Some(nonce) = nonce {
-			ensure!(source_account.nonce == nonce, Error::<T>::InvalidNonce);
-		}
 
 		Module::<T>::withdraw_fee(&source, total_fee);
 		let (reason, retv) = f(&mut executor);
@@ -149,13 +149,22 @@ impl<T: Config> Runner<T> {
 		})
 	}
 
-	fn inc_nonce(address: H160, is_create: bool, config: &evm::Config) {
-		use frame_support::debug;
-		if !is_create || (is_create && config.create_increase_nonce)   {
-			debug::info!("bear: --- inc nonce");
-			let account_id = T::AddressMapping::into_account_id(address);
+	fn inc_nonce(
+		address: H160,
+		tx_nonce: Option<U256>,
+		is_create: bool,
+		config: &evm::Config,
+	) -> Result<(), Error<T>> {
+		let account_id = T::AddressMapping::into_account_id(address);
+		let source_account = T::AccountBasicMapping::account_basic(&address);
+		if let Some(nonce) = tx_nonce {
+			ensure!(source_account.nonce == nonce, Error::<T>::InvalidNonce);
+		}
+
+		if !is_create || (is_create && config.create_increase_nonce) {
 			frame_system::Module::<T>::inc_account_nonce(&account_id);
 		}
+		Ok(())
 	}
 }
 
@@ -172,7 +181,7 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CallInfo, Self::Error> {
-		Self::inc_nonce(source, false, config);
+		Self::inc_nonce(source, nonce, false, config);
 
 		Self::execute(
 			source,
@@ -194,7 +203,7 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CreateInfo, Self::Error> {
-		Self::inc_nonce(source, true, config);
+		Self::inc_nonce(source, nonce, true, config)?;
 		Self::execute(
 			source,
 			value,
@@ -222,7 +231,7 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CreateInfo, Self::Error> {
-		Self::inc_nonce(source, true, config);
+		Self::inc_nonce(source, nonce, true, config);
 		let code_hash = H256::from_slice(Keccak256::digest(&init).as_slice());
 		Self::execute(
 			source,

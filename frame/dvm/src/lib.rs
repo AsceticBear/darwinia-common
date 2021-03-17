@@ -293,7 +293,11 @@ impl<T: Config> frame_support::unsigned::ValidateUnsigned for Module<T> {
 				<T as darwinia_evm::Config>::AccountBasicMapping::account_basic(&origin);
 
 			use frame_support::debug;
-			debug::info!("bear: --- tx nonce {:?}, account data nonce {:?}", transaction.nonce, account_data.nonce);
+			debug::info!(
+				"bear: --- tx nonce {:?}, account data nonce {:?}",
+				transaction.nonce,
+				account_data.nonce
+			);
 			if transaction.nonce < account_data.nonce {
 				return InvalidTransaction::Stale.into();
 			}
