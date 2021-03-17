@@ -69,6 +69,7 @@ impl<T: Config> Runner<T> {
 			None => Default::default(),
 		};
 
+
 		let vicinity = Vicinity {
 			gas_price,
 			origin: source,
@@ -86,10 +87,10 @@ impl<T: Config> Runner<T> {
 			.checked_add(total_fee)
 			.ok_or(Error::<T>::PaymentOverflow)?;
 		let source_account = T::AccountBasicMapping::account_basic(&source);
-		ensure!(
-			source_account.balance >= total_payment,
-			Error::<T>::BalanceLow
-		);
+		// ensure!(
+		// 	source_account.balance >= total_payment,
+		// 	Error::<T>::BalanceLow
+		// );
 
 		debug!("bear: --- check nonce in execute, source account nonce {:?}, execute nonce {:?}", source_account.nonce, nonce);
 		if let Some(nonce) = nonce {
@@ -147,6 +148,15 @@ impl<T: Config> Runner<T> {
 			logs: state.substate.logs,
 		})
 	}
+
+	fn inc_nonce(address: H160, is_create: bool, config: &evm::Config) {
+		use frame_support::debug;
+		if !is_create || (is_create && config.create_increase_nonce)   {
+			debug::info!("bear: --- inc nonce");
+			let account_id = T::AddressMapping::into_account_id(address);
+			frame_system::Module::<T>::inc_account_nonce(&account_id);
+		}
+	}
 }
 
 impl<T: Config> RunnerT<T> for Runner<T> {
@@ -162,6 +172,8 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CallInfo, Self::Error> {
+		Self::inc_nonce(source, false, config);
+
 		Self::execute(
 			source,
 			value,
@@ -182,6 +194,7 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CreateInfo, Self::Error> {
+		Self::inc_nonce(source, true, config);
 		Self::execute(
 			source,
 			value,
@@ -209,6 +222,7 @@ impl<T: Config> RunnerT<T> for Runner<T> {
 		nonce: Option<U256>,
 		config: &evm::Config,
 	) -> Result<CreateInfo, Self::Error> {
+		Self::inc_nonce(source, true, config);
 		let code_hash = H256::from_slice(Keccak256::digest(&init).as_slice());
 		Self::execute(
 			source,
@@ -444,13 +458,6 @@ impl<'vicinity, 'config, T: Config> StackStateT<'config>
 
 	fn deleted(&self, address: H160) -> bool {
 		self.substate.deleted(address)
-	}
-
-	fn inc_nonce(&mut self, address: H160) {
-		use frame_support::debug;
-		debug::info!("bear: --- inc nonce");
-		let account_id = T::AddressMapping::into_account_id(address);
-		frame_system::Module::<T>::inc_account_nonce(&account_id);
 	}
 
 	fn set_storage(&mut self, address: H160, index: H256, value: H256) {
