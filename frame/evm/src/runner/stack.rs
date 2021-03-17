@@ -27,8 +27,7 @@ use crate::{
 use dp_evm::{Account, CallInfo, CreateInfo, ExecutionInfo, Log, Vicinity};
 // --- substrate ---
 use frame_support::{
-	debug::{self, debug},
-	ensure,
+	debug, ensure,
 	storage::{StorageDoubleMap, StorageMap},
 	traits::Get,
 };
@@ -62,7 +61,6 @@ impl<T: Config> Runner<T> {
 			&mut StackExecutor<'config, SubstrateStackState<'_, 'config, T>>,
 		) -> (ExitReason, R),
 	{
-		debug::info!("bear: --- enter execute in runner");
 		// Gas price check is skipped when performing a gas estimation.
 		let gas_price = match gas_price {
 			Some(gas_price) => {
