@@ -2413,7 +2413,7 @@ checksum = "f7531096570974c3a9dcf9e4b8e1cede1ec26cf5046219fb3b9d897503b9be59"
 [[package]]
 name = "evm"
 version = "0.23.0"
-source = "git+https://github.com/AsceticBear/evm.git#bde68e95033ab667c24328b519e1599bf0769d71"
+source = "git+https://github.com/AsceticBear/evm.git#3477d66989bc1b9b4b410578fdb29a08e767d1cb"
 dependencies = [
  "ethereum",
  "evm-core",
@@ -2430,7 +2430,7 @@ dependencies = [
 [[package]]
 name = "evm-core"
 version = "0.23.0"
-source = "git+https://github.com/AsceticBear/evm.git#bde68e95033ab667c24328b519e1599bf0769d71"
+source = "git+https://github.com/AsceticBear/evm.git#3477d66989bc1b9b4b410578fdb29a08e767d1cb"
 dependencies = [
  "parity-scale-codec 1.3.7",
  "primitive-types 0.8.0",
@@ -2440,7 +2440,7 @@ dependencies = [
 [[package]]
 name = "evm-gasometer"
 version = "0.23.0"
-source = "git+https://github.com/AsceticBear/evm.git#bde68e95033ab667c24328b519e1599bf0769d71"
+source = "git+https://github.com/AsceticBear/evm.git#3477d66989bc1b9b4b410578fdb29a08e767d1cb"
 dependencies = [
  "evm-core",
  "evm-runtime",
@@ -2450,7 +2450,7 @@ dependencies = [
 [[package]]
 name = "evm-runtime"
 version = "0.23.0"
-source = "git+https://github.com/AsceticBear/evm.git#bde68e95033ab667c24328b519e1599bf0769d71"
+source = "git+https://github.com/AsceticBear/evm.git#3477d66989bc1b9b4b410578fdb29a08e767d1cb"
 dependencies = [
  "evm-core",
  "primitive-types 0.8.0",
