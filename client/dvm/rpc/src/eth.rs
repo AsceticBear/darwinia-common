@@ -1642,8 +1642,7 @@ where
 				// As pending transactions have a finite lifespan anyway
 				// we can ignore MultiplePostRuntimeLogs error checks.
 				let log = dp_consensus::find_log(&notification.header.digest()).ok();
-				let post_hashes = log.map(|log| log.into_hashes());
-
+				let post_hashes = log.and_then(|l| l).map(|log| log.into_hashes());
 				if let Some(post_hashes) = post_hashes {
 					// Retain all pending transactions that were not
 					// processed in the current block.

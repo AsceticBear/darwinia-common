@@ -175,7 +175,7 @@ decl_module! {
 		fn on_initialize(_block_number: T::BlockNumber) -> Weight {
 			log::debug!("bear: --- on initialize");
 			Pending::kill();
-			if let Ok(log) = dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()) {
+			if let Ok(Some(log) = dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()) {
 				let PreLog::Block(block) = log;
 
 				for transaction in block.transactions {
@@ -306,6 +306,7 @@ impl<T: Config> Module<T> {
 		CurrentReceipts::put(receipts.clone());
 		CurrentTransactionStatuses::put(statuses.clone());
 
+		log::debug!("bear: --- post_log is {:?}", post_log);
 		if post_log {
 			let digest = DigestItem::<T::Hash>::Consensus(
 				FRONTIER_ENGINE_ID,

@@ -36,8 +36,17 @@ pub fn sync_block<Block: BlockT>(
 	header: &Block::Header,
 ) -> Result<(), String> {
 	log::debug!("bear: --- sync block {:?}", header);
-	let log = dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?;
-	let post_hashes = log.into_hashes();
+	// let log = dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?;
+	// let post_hashes = log.into_hashes();
+
+	let post_hashes = if let Some(log) =
+               dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?
+       {
+               log.into_hashes()
+       } else {
+               return Ok(());
+      };
+
 
 	let mapping_commitment = dc_db::MappingCommitment {
 		block_hash: header.hash(),

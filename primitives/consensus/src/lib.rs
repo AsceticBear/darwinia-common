@@ -90,7 +90,7 @@ pub enum FindLogError {
 	MultipleLogs,
 }
 
-pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<PreLog, FindLogError> {
+pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PreLog>, FindLogError> {
 	log::debug!("bear: --- find_pre_log, digest");
 	let mut found = None;
 
@@ -99,15 +99,16 @@ pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<PreLog, FindLogError>
 		match (log, found.is_some()) {
 			(Some(_), true) => return Err(FindLogError::MultipleLogs),
 			(Some(log), false) => found = Some(log),
-			(None, _) => (),
+			(None, _) => found = None,
 		}
 	}
 	log::debug!("bear: --- find pre log, found {:?}", found);
 
-	found.ok_or(FindLogError::NotFound)
+	Ok(found)
+
 }
 
-pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<PostLog, FindLogError> {
+pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PostLog>, FindLogError> {
 	let mut found = None;
 
 	for log in digest.logs() {
@@ -115,14 +116,14 @@ pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<PostLog, FindLogErro
 		match (log, found.is_some()) {
 			(Some(_), true) => return Err(FindLogError::MultipleLogs),
 			(Some(log), false) => found = Some(log),
-			(None, _) => (),
+			(None, _) => found = None,
 		}
 	}
 
-	found.ok_or(FindLogError::NotFound)
+	Ok(found)
 }
 
-pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Log, FindLogError> {
+pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Option<Log>, FindLogError> {
 	log::debug!("bear: --- find log, digest");
 	let mut found = None;
 
@@ -131,19 +132,19 @@ pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Log, FindLogError> {
 		match (pre_log, found.is_some()) {
 			(Some(_), true) => return Err(FindLogError::MultipleLogs),
 			(Some(pre_log), false) => found = Some(Log::Pre(pre_log)),
-			(None, _) => (),
+			(None, _) => found = None,
 		}
 
 		let post_log = log.try_to::<PostLog>(OpaqueDigestItemId::Consensus(&FRONTIER_ENGINE_ID));
 		match (post_log, found.is_some()) {
 			(Some(_), true) => return Err(FindLogError::MultipleLogs),
 			(Some(post_log), false) => found = Some(Log::Post(post_log)),
-			(None, _) => (),
+			(None, _) => found = None,
 		}
 	}
 
 	log::debug!("bear: --- find log, found {:?}", found.is_some());
-	found.ok_or(FindLogError::NotFound)
+	Ok(found)
 }
 
 pub fn ensure_log<Hash>(digest: &Digest<Hash>) -> Result<(), FindLogError> {
@@ -165,9 +166,10 @@ pub fn ensure_log<Hash>(digest: &Digest<Hash>) -> Result<(), FindLogError> {
 		}
 	}
 
-	if found {
-		Ok(())
-	} else {
-		Err(FindLogError::NotFound)
-	}
+	// if found {
+	// 	Ok(())
+	// } else {
+	// 	Err(FindLogError::NotFound)
+	// }
+	Ok(())
 }
