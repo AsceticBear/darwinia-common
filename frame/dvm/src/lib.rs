@@ -166,12 +166,14 @@ decl_module! {
 		}
 
 		fn on_finalize(_block_number: T::BlockNumber) {
+			log::debug!("bear: --- on finalize");
 			<Module<T>>::store_block(
 				dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()).is_err(),
 			);
 		}
 
 		fn on_initialize(_block_number: T::BlockNumber) -> Weight {
+			log::debug!("bear: --- on initialize");
 			Pending::kill();
 			if let Ok(log) = dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()) {
 				let PreLog::Block(block) = log;

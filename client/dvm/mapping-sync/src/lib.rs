@@ -35,6 +35,7 @@ pub fn sync_block<Block: BlockT>(
 	backend: &dc_db::Backend<Block>,
 	header: &Block::Header,
 ) -> Result<(), String> {
+	log::debug!("bear: --- sync block {:?}", header);
 	let log = dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?;
 	let post_hashes = log.into_hashes();
 
@@ -134,6 +135,7 @@ where
 			.write_current_syncing_tips(current_syncing_tips)?;
 		Ok(true)
 	} else {
+		log::debug!("bear: --- sync block, header {:?}", operating_header);
 		sync_block(frontier_backend, &operating_header)?;
 
 		current_syncing_tips.push(*operating_header.parent_hash());

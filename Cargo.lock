@@ -2038,6 +2038,7 @@ name = "dp_consensus"
 version = "2.1.0"
 dependencies = [
  "ethereum",
+ "log",
  "parity-scale-codec",
  "rlp",
  "sha3 0.8.2",
@@ -2166,6 +2167,7 @@ dependencies = [
  "frame-support",
  "frame-system",
  "libsecp256k1",
+ "log",
  "pallet-timestamp",
  "parity-scale-codec",
  "rlp",

@@ -44,7 +44,7 @@ impl Log {
 	}
 }
 
-#[derive(Decode, Encode, Clone, PartialEq, Eq)]
+#[derive(Decode, Encode, Clone, PartialEq, Eq, Debug)]
 pub enum PreLog {
 	#[codec(index = 3)]
 	Block(ethereum::Block),
@@ -91,6 +91,7 @@ pub enum FindLogError {
 }
 
 pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<PreLog, FindLogError> {
+	log::debug!("bear: --- find_pre_log, digest");
 	let mut found = None;
 
 	for log in digest.logs() {
@@ -101,6 +102,7 @@ pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<PreLog, FindLogError>
 			(None, _) => (),
 		}
 	}
+	log::debug!("bear: --- find pre log, found {:?}", found);
 
 	found.ok_or(FindLogError::NotFound)
 }
@@ -121,6 +123,7 @@ pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<PostLog, FindLogErro
 }
 
 pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Log, FindLogError> {
+	log::debug!("bear: --- find log, digest");
 	let mut found = None;
 
 	for log in digest.logs() {
@@ -139,6 +142,7 @@ pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Log, FindLogError> {
 		}
 	}
 
+	log::debug!("bear: --- find log, found {:?}", found.is_some());
 	found.ok_or(FindLogError::NotFound)
 }
 
