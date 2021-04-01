@@ -50,7 +50,7 @@ use ethereum_types::{H160, H256, H512, H64, U256, U64};
 use futures::{future::TryFutureExt, StreamExt};
 use jsonrpc_core::{
 	futures::future::{self, Future},
-	BoxFuture, Result,
+	BoxFuture, ErrorCode, Result,
 };
 use sha3::{Digest, Keccak256};
 use std::collections::{BTreeMap, HashMap};
@@ -861,7 +861,7 @@ where
 	}
 
 	fn estimate_gas(&self, request: CallRequest, _: Option<BlockNumber>) -> Result<U256> {
-		let calculate_gas_used = |request| {
+		let calculate_gas_used = |request| -> Result<U256> {
 			let hash = self.client.info().best_hash;
 
 			let CallRequest {
@@ -941,25 +941,48 @@ where
 
 			// invariant: lower <= mid <= upper
 			while change_pct > threshold_pct {
+				log::debug!(
+					"bear: --- enter while, change_pct {:?}, threshold_pct {:?}",
+					change_pct,
+					threshold_pct
+				);
 				let mut test_request = request.clone();
 				test_request.gas = Some(mid);
+				log::debug!("bear: --- test request set {:?}", mid);
 				match calculate_gas_used(test_request) {
 					// if Ok -- try to reduce the gas used
 					Ok(used_gas) => {
+						log::debug!("bear: --- used gas {:?}", used_gas);
 						old_best = best;
 						best = used_gas;
 						change_pct = (U256::from(100) * (old_best - best)) / old_best;
 						upper = mid;
 						mid = (lower + upper + 1) / 2;
+						log::debug!(
+							"bear: --- set mid {:?}, upper {:?}, change_pct {:?}",
+							mid,
+							upper,
+							change_pct
+						);
 					}
-					// if Err -- we need more gas
-					Err(_) => {
-						lower = mid;
-						mid = (lower + upper + 1) / 2;
-
-						if mid == lower {
-							break;
+					Err(err) => {
+						log::debug!(
+							"bear: --- the estimate error msg {:?}, low {:?}, mid {:?}",
+							err,
+							lower,
+							mid
+						);
+						// if Err == OutofGas or OutofFund  -- we need more gas
+						if err.code == ErrorCode::ServerError(0) {
+							lower = mid;
+							mid = (lower + upper + 1) / 2;
+							log::debug!("bear: --- the estimate lower {:?}, min {:?}", lower, mid);
+							if mid == lower {
+								break;
+							}
 						}
+						// Return err directly
+						return Err(err);
 					}
 				}
 			}

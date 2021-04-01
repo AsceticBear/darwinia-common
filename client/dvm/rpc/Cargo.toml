@@ -25,6 +25,7 @@ log                 = { version = "0.4.14" }
 rand                = { version = "0.7" }
 rlp                 = { version = "0.5.0" }
 sha3                = { version = "0.8" }
+evm             	= { version = "0.25.0", features = ["with-codec"] }
 # darwinia
 darwinia-evm        = { path = "../../../frame/evm" }
 dc-consensus        = { path = "../consensus" }
