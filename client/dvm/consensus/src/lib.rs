@@ -126,6 +126,7 @@ where
 		// actions are needed and mapping syncing is delegated to a separate
 		// worker.
 		ensure_log(&block.header.digest()).map_err(|e| Error::from(e))?;
+		// log::debug!("bear: --- import block {:?}", block);
 
 		self.inner
 			.import_block(block, new_cache)

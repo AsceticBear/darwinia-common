@@ -91,7 +91,6 @@ pub enum FindLogError {
 }
 
 pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PreLog>, FindLogError> {
-	log::debug!("bear: --- find_pre_log, digest");
 	let mut found = None;
 
 	for log in digest.logs() {
@@ -105,7 +104,6 @@ pub fn find_pre_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PreLog>, FindL
 	log::debug!("bear: --- find pre log, found {:?}", found);
 
 	Ok(found)
-
 }
 
 pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PostLog>, FindLogError> {
@@ -124,7 +122,6 @@ pub fn find_post_log<Hash>(digest: &Digest<Hash>) -> Result<Option<PostLog>, Fin
 }
 
 pub fn find_log<Hash>(digest: &Digest<Hash>) -> Result<Option<Log>, FindLogError> {
-	log::debug!("bear: --- find log, digest");
 	let mut found = None;
 
 	for log in digest.logs() {
@@ -165,6 +162,7 @@ pub fn ensure_log<Hash>(digest: &Digest<Hash>) -> Result<(), FindLogError> {
 			(None, _) => (),
 		}
 	}
+	log::debug!("bear: --- ensure log, found {:?}", found);
 
 	// if found {
 	// 	Ok(())

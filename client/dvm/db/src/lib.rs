@@ -143,8 +143,8 @@ impl<Block: BlockT> MetaDb<Block> {
 }
 
 pub struct MappingCommitment<Block: BlockT> {
-	pub block_hash: Block::Hash,
-	pub ethereum_block_hash: H256,
+	pub block_hash: Block::Hash,   // substrate raw block hash
+	pub ethereum_block_hash: H256, // etheum block hash -> substrate header -> ethereum header hash
 	pub ethereum_transaction_hashes: Vec<H256>,
 }
 

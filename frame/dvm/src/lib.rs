@@ -175,7 +175,7 @@ decl_module! {
 		fn on_initialize(_block_number: T::BlockNumber) -> Weight {
 			log::debug!("bear: --- on initialize");
 			Pending::kill();
-			if let Ok(Some(log) = dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()) {
+			if let Ok(Some(log)) = dp_consensus::find_pre_log(&<frame_system::Pallet<T>>::digest()) {
 				let PreLog::Block(block) = log;
 
 				for transaction in block.transactions {

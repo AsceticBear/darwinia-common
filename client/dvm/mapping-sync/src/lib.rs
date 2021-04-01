@@ -40,13 +40,12 @@ pub fn sync_block<Block: BlockT>(
 	// let post_hashes = log.into_hashes();
 
 	let post_hashes = if let Some(log) =
-               dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?
-       {
-               log.into_hashes()
-       } else {
-               return Ok(());
-      };
-
+		dp_consensus::find_log(header.digest()).map_err(|e| format!("{:?}", e))?
+	{
+		log.into_hashes()
+	} else {
+		return Ok(());
+	};
 
 	let mapping_commitment = dc_db::MappingCommitment {
 		block_hash: header.hash(),
@@ -98,6 +97,7 @@ where
 	B: sp_blockchain::HeaderBackend<Block> + sp_blockchain::Backend<Block>,
 {
 	let mut current_syncing_tips = frontier_backend.meta().current_syncing_tips()?;
+	log::debug!("bear: --- sync_one_block, current_syncing_tips {:?}", current_syncing_tips);
 
 	if current_syncing_tips.is_empty() {
 		let mut leaves = substrate_backend.leaves().map_err(|e| format!("{:?}", e))?;
@@ -107,6 +107,7 @@ where
 
 		current_syncing_tips.append(&mut leaves);
 	}
+	log::debug!("bear: --- sync_one_block, current_syncing_tips append leaves {:?}", current_syncing_tips);
 
 	let mut operating_tip = None;
 
@@ -144,7 +145,7 @@ where
 			.write_current_syncing_tips(current_syncing_tips)?;
 		Ok(true)
 	} else {
-		log::debug!("bear: --- sync block, header {:?}", operating_header);
+		log::debug!("bear: --- sync_one_block, header {:?}", operating_header);
 		sync_block(frontier_backend, &operating_header)?;
 
 		current_syncing_tips.push(*operating_header.parent_hash());
