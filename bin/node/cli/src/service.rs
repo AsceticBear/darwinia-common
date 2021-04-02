@@ -627,17 +627,17 @@ where
 		);
 	}
 
-	task_manager.spawn_essential_handle().spawn(
-		"frontier-mapping-sync-worker",
-		MappingSyncWorker::new(
-			client.import_notification_stream(),
-			Duration::new(6, 0),
-			client.clone(),
-			backend.clone(),
-			frontier_backend.clone(),
-		)
-		.for_each(|()| futures::future::ready(())),
-	);
+	// task_manager.spawn_essential_handle().spawn(
+	// 	"frontier-mapping-sync-worker",
+	// 	MappingSyncWorker::new(
+	// 		client.import_notification_stream(),
+	// 		Duration::new(6, 0),
+	// 		client.clone(),
+	// 		backend.clone(),
+	// 		frontier_backend.clone(),
+	// 	)
+	// 	.for_each(|()| futures::future::ready(())),
+	// );
 
 	// Spawn Frontier EthFilterApi maintenance task.
 	if let Some(filter_pool) = filter_pool {

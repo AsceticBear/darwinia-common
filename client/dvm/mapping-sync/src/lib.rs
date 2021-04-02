@@ -68,20 +68,24 @@ where
 {
 	let id = BlockId::Hash(header.hash());
 
+	log::debug!("bear: --- sync_genesis_block, id {:?}", id);
 	let block = client
 		.runtime_api()
 		.current_block(&id)
 		.map_err(|e| format!("{:?}", e))?;
-	let block_hash = block
-		.ok_or("Ethereum genesis block not found".to_string())?
-		.header
-		.hash();
-	let mapping_commitment = dc_db::MappingCommitment::<Block> {
-		block_hash: header.hash(),
-		ethereum_block_hash: block_hash,
-		ethereum_transaction_hashes: Vec::new(),
-	};
-	backend.mapping().write_hashes(mapping_commitment)?;
+	log::debug!("bear: --- sync_genesis_block, block {:?}", block);
+	if block.is_some() {
+		let block_hash = block
+			.ok_or("Ethereum genesis block not found".to_string())?
+			.header
+			.hash();
+		let mapping_commitment = dc_db::MappingCommitment::<Block> {
+			block_hash: header.hash(),
+			ethereum_block_hash: block_hash,
+			ethereum_transaction_hashes: Vec::new(),
+		};
+		backend.mapping().write_hashes(mapping_commitment)?;
+	}
 
 	Ok(())
 }
@@ -97,7 +101,10 @@ where
 	B: sp_blockchain::HeaderBackend<Block> + sp_blockchain::Backend<Block>,
 {
 	let mut current_syncing_tips = frontier_backend.meta().current_syncing_tips()?;
-	log::debug!("bear: --- sync_one_block, current_syncing_tips {:?}", current_syncing_tips);
+	log::debug!(
+		"bear: --- sync_one_block, current_syncing_tips {:?}",
+		current_syncing_tips
+	);
 
 	if current_syncing_tips.is_empty() {
 		let mut leaves = substrate_backend.leaves().map_err(|e| format!("{:?}", e))?;
@@ -107,7 +114,10 @@ where
 
 		current_syncing_tips.append(&mut leaves);
 	}
-	log::debug!("bear: --- sync_one_block, current_syncing_tips append leaves {:?}", current_syncing_tips);
+	log::debug!(
+		"bear: --- sync_one_block, current_syncing_tips append leaves {:?}",
+		current_syncing_tips
+	);
 
 	let mut operating_tip = None;
 
