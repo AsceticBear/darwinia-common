@@ -95,6 +95,7 @@ sp-trie                                    = { features = ["memory-tracker"], gi
 substrate-frame-rpc-system                 = { git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
 substrate-prometheus-endpoint              = { git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
 try-runtime-cli                            = { optional = true, git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
+frame-benchmarking-cli                     = { git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
 
 [build-dependencies]
 # substrate
@@ -124,4 +125,8 @@ wasmtime  = ["sc-cli/wasmtime"]
 try-runtime = [
 	"pangolin-runtime/try-runtime",
 	"try-runtime-cli",
+]
+
+runtime-benchmarks = [
+	"pangolin-runtime/runtime-benchmarks",
 ]
