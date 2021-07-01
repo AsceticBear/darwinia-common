@@ -1998,6 +1998,7 @@ dependencies = [
  "dvm-ethereum",
  "ethereum-primitives",
  "ethereum-types",
+ "frame-benchmarking",
  "frame-support",
  "frame-system",
  "libsecp256k1",

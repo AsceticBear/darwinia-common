@@ -34,6 +34,8 @@ sp-io         = { default-features = false, git = "https://github.com/darwinia-n
 sp-runtime    = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
 sp-std        = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1" }
 bp-runtime    = { default-features = false, git = "https://github.com/darwinia-network/parity-bridges-common", tag = "darwinia-v0.11.1" }
+frame-benchmarking  = { default-features = false, git = "https://github.com/darwinia-network/substrate.git", tag = "darwinia-v0.11.1", optional = true}
+# frame-benchmarking = { version = "3.1.0", default-features = false, path = "../benchmarking", optional = true }
 
 [dev-dependencies]
 libsecp256k1   = { version = "0.3.5", default-features = false }
@@ -45,6 +47,7 @@ darwinia-support                 = { features = ["easy-testing"], path = "../../
 
 [features]
 default = ["std"]
+runtime-benchmarks = ["frame-benchmarking"]
 
 std = [
 	"substrate-std",

@@ -20,6 +20,7 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
+mod benchmarking;
 pub mod weights;
 pub use weights::WeightInfo;
 
