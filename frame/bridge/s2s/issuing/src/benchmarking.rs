@@ -21,7 +21,7 @@
 use super::*;
 
 use frame_benchmarking::{account, benchmarks, impl_benchmark_test_suite, whitelisted_caller};
-use frame_system::{Pallet as System, RawOrigin};
+use frame_system::RawOrigin;
 use sp_runtime::traits::Bounded;
 
 use crate::Pallet as Issuing;
@@ -29,34 +29,40 @@ use crate::Pallet as Issuing;
 benchmarks! {
 	// dispatch handle benchmark
 	dispatch_handle {
-		let caller = whitelisted_caller();
+		// let caller = whitelisted_caller();
+		// System::<T>::set_block_number(0u32.into());
 
-	}:dispatch_handle(RawOrigin::Signed(caller.clone()), vec![1, 2, 3])
+	// }:dispatch_handle(RawOrigin::None, vec![1, 2, 3])
+	}: {
+		todo!();
+	}
 	verify {
 		assert_eq!(1, 1);
 	}
 
 	// remote register benchmark
 	remote_register {
-		let caller = whitelisted_caller();
+		// let caller = whitelisted_caller();
 
-	}:remote_register(RawOrigin::Signed(caller.clone()), vec![1, 2, 3])
+	// }:remote_register(RawOrigin::Signed(caller.clone()), vec![1, 2, 3])
+	}: {
+		todo!()
+	}
 	verify {
 		assert_eq!(1, 1);
 	}
 
 	// remote_issue
 	remote_issue {
-		let caller = whitelisted_caller();
+		// let caller = whitelisted_caller();
 
-	}:remote_issue(RawOrigin::Signed(caller.clone()), vec![1, 2, 3])
+	// }:remote_issue(RawOrigin::Signed(caller.clone()), vec![1, 2, 3])
+	}: {
+		todo!()
+	}
 	verify {
 		assert_eq!(1, 1);
 	}
 }
 
-impl_benchmark_test_suite!(
-	Issuing,
-	crate::tests::ExtBuilder::default().existential_deposit(256).build(),
-	crate::tests::Test,
-);
+impl_benchmark_test_suite!(Issuing, crate::tests::new_test_ext(), crate::tests::Test,);

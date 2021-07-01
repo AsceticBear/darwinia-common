@@ -3127,6 +3127,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "frame-system-benchmarking"
+version = "3.0.0"
+source = "git+https://github.com/darwinia-network/substrate.git?tag=darwinia-v0.11.1#3f110196163b5ec03bac5ee188d60bedf3ebd91d"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "frame-system-rpc-runtime-api"
 version = "3.0.0"
 source = "git+https://github.com/darwinia-network/substrate.git?tag=darwinia-v0.11.1#3f110196163b5ec03bac5ee188d60bedf3ebd91d"
@@ -5572,6 +5586,7 @@ name = "pallet-collective"
 version = "3.0.0"
 source = "git+https://github.com/darwinia-network/substrate.git?tag=darwinia-v0.11.1#3f110196163b5ec03bac5ee188d60bedf3ebd91d"
 dependencies = [
+ "frame-benchmarking",
  "frame-support",
  "frame-system",
  "log",
@@ -5944,11 +5959,14 @@ dependencies = [
  "dvm-rpc-runtime-api",
  "ethereum-primitives",
  "evm",
+ "frame-benchmarking",
  "frame-executive",
  "frame-support",
  "frame-system",
+ "frame-system-benchmarking",
  "frame-system-rpc-runtime-api",
  "frame-try-runtime",
+ "hex-literal",
  "log",
  "pallet-authority-discovery",
  "pallet-authorship",
