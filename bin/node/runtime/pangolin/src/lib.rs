@@ -848,7 +848,7 @@ impl_runtime_apis! {
 
 			let whitelist: Vec<TrackedStorageKey> = vec![
 				// factory id
-				hex_literal::hex!("64766d3a00000000000000e1586e744b99bf8e4c981dfe4dd4369d6f8ed88ab3").to_vec().into(),
+				// hex_literal::hex!("64766d3a00000000000000e1586e744b99bf8e4c981dfe4dd4369d6f8ed88ab3").to_vec().into(),
 			];
 
 			let mut batches = Vec::<BenchmarkBatch>::new();
