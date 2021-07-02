@@ -27,13 +27,17 @@ use sp_std::vec;
 
 use crate::Pallet as Issuing;
 
+const SEED: u32 = 0;
+
 benchmarks! {
 	// dispatch handle benchmark
 	dispatch_handle {
-		// let caller = whitelisted_caller();
+		// let caller: T::AccountId = whitelisted_caller();
+		let caller = account("caller", 4, SEED);
+		log::debug!("bear: --- benchmark: the caller is {:?}", caller);
 		// System::<T>::set_block_number(0u32.into());
 
-	}:dispatch_handle(RawOrigin::None, vec![1, 2, 3, 4, 5, 6, 7, 8])
+	}:dispatch_handle(RawOrigin::Signed(caller), vec![1, 2, 3, 4, 5, 6, 7, 8])
 	// }: {
 	// 	// dispatch_handle(RawOrigin::None, vec![1, 2, 3])
 

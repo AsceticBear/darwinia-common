@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./target/release/drml benchmark \
+RUST_LOG=darwinia_s2s_issuing=debug ./target/release/drml benchmark \
   --chain dev \
   --execution wasm \
   --wasm-execution compiled \
