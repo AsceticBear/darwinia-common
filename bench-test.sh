@@ -2,7 +2,6 @@
 
 RUST_LOG=darwinia_s2s_issuing=debug ./target/release/drml benchmark \
   --chain dev \
-  --execution wasm \
   --wasm-execution compiled \
   --pallet darwinia_s2s_issuing \
   --extrinsic=* \
@@ -12,3 +11,4 @@ RUST_LOG=darwinia_s2s_issuing=debug ./target/release/drml benchmark \
   --heap-pages=4096 \
   --output=./frame/bridge/s2s/issuing/src/weight.rs \
   --template=./.maintain/frame-weight-template.hbs
+  # --execution native \
