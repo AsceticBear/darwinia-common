@@ -111,11 +111,11 @@ pub mod pallet {
 			log::debug!("bear: --- the factory {:?}", factory);
 			let factory_id = <T as darwinia_evm::Config>::AddressMapping::into_account_id(factory);
 			log::debug!("bear: --- the factory id {:?}", factory_id);
-			let mock_id = array_bytes::hex2bytes_unchecked(
-				"0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
-			);
-			let mock_id: T::AccountId = T::AccountId::decode(&mut &mock_id[..]).unwrap_or_default();
-			assert_eq!(factory_id, mock_id);
+			// let mock_id = array_bytes::hex2bytes_unchecked(
+			// 	"0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+			// );
+			// let mock_id: T::AccountId = T::AccountId::decode(&mut &mock_id[..]).unwrap_or_default();
+			// assert_eq!(factory_id, mock_id);
 			ensure!(caller == factory_id, <Error<T>>::NotFactoryContract);
 
 			let burn_action = &sha3::Keccak256::digest(&BURN_ACTION)[0..4];

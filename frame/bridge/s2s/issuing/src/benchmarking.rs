@@ -24,6 +24,7 @@ use frame_benchmarking::{account, benchmarks, impl_benchmark_test_suite, whiteli
 use frame_system::RawOrigin;
 use sp_runtime::traits::Bounded;
 use sp_std::vec;
+use dp_asset::token::Token;
 
 use crate::Pallet as Issuing;
 
@@ -32,43 +33,26 @@ const SEED: u32 = 0;
 benchmarks! {
 	// dispatch handle benchmark
 	dispatch_handle {
-		// let caller: T::AccountId = whitelisted_caller();
-		let caller = account("caller", 4, SEED);
+		let caller: T::AccountId = whitelisted_caller();
+		// let caller = account("caller", 4, SEED);
 		log::debug!("bear: --- benchmark: the caller is {:?}", caller);
 		// System::<T>::set_block_number(0u32.into());
 
+		let token = Token::Native(TokenInfo::default());
+
 	}:dispatch_handle(RawOrigin::Signed(caller), vec![1, 2, 3, 4, 5, 6, 7, 8])
-	// }: {
-	// 	// dispatch_handle(RawOrigin::None, vec![1, 2, 3])
 
-	// }
-	verify {
-		assert_eq!(1, 1);
-	}
+	// remote register benchmark
+	remote_register {
+		let caller: T::AccountId = whitelisted_caller();
+		let token = Token::Native(TokenInfo::default());
+	}: remote_register(origin: OriginFor<T>, token: Token)
 
-	// // remote register benchmark
-	// remote_register {
-	// 	// let caller = whitelisted_caller();
-
-	// }: {
-	// 	// remote_register(origin: OriginFor<T>, token: Token)
-	// 	todo!()
-	// }
-	// verify {
-	// 	assert_eq!(1, 1);
-	// }
-
-	// // remote_issue
-	// remote_issue {
-	// 	// let caller = whitelisted_caller();
-
-	// }: {
-	// 	// pub fn remote_issue(origin: OriginFor<T>, token: Token, recipient: H160)
-	// 	todo!()
-	// }
-	// verify {
-	// 	assert_eq!(1, 1);
-	// }
+	// remote_issue
+	remote_issue {
+		let caller: T::AccountId = whitelisted_caller();
+		let token = Token::Native(TokenInfo::default());
+	}: _(RawOrigin::Signed(caller), token)
 }
 
 impl_benchmark_test_suite!(Issuing, crate::tests::new_test_ext(), crate::tests::Test,);
