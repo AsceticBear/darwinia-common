@@ -15,6 +15,7 @@ use sp_runtime::{
 	traits::{BlakeTwo256, IdentityLookup},
 	AccountId32, RuntimeDebug,
 };
+use ethereum_primitives::EthereumAddress;
 
 type Block = MockBlock<Test>;
 type UncheckedExtrinsic = MockUncheckedExtrinsic<Test>;
@@ -161,13 +162,7 @@ impl darwinia_evm::Config for Test {
 	type RingCurrency = Ring;
 	type KtonCurrency = Kton;
 	type Event = ();
-	type Precompiles = (
-		darwinia_evm_precompile_simple::ECRecover,
-		darwinia_evm_precompile_simple::Sha256,
-		darwinia_evm_precompile_simple::Ripemd160,
-		darwinia_evm_precompile_simple::Identity,
-		darwinia_evm_precompile_withdraw::WithDraw<Self>,
-	);
+	type Precompiles = ();
 	type ChainId = ChainId;
 	type BlockGasLimit = BlockGasLimit;
 	type Runner = darwinia_evm::runner::stack::Runner<Self>;

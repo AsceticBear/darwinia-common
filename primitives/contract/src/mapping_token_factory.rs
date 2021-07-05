@@ -270,7 +270,7 @@ impl TokenBurnInfo {
 			Token::Address(backing),
 			Token::Address(sender),
 			Token::Address(source),
-			Token::FixedBytes(recipient),
+			Token::Bytes(recipient),
 			Token::Uint(amount),
 			Token::Uint(fee),
 		]);

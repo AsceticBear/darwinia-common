@@ -25,6 +25,7 @@ use codec::{Decode, Encode, FullCodec};
 // --- substrate ---
 use sp_runtime::{DispatchResult, RuntimeDebug};
 use sp_std::prelude::*;
+use sp_std::vec;
 
 pub type OpCode = [u8; 4];
 pub type Term = u32;

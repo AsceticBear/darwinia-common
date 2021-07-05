@@ -23,8 +23,8 @@
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
-pub mod weights;
-pub use weights::WeightInfo;
+pub mod weight;
+pub use weight::WeightInfo;
 
 // --- crates ---
 use ethereum_types::{H160, H256, U256};
@@ -97,8 +97,10 @@ pub mod pallet {
 		///
 		/// When user burn their tokens, this handler will receive the event from dispatch
 		/// precompile contract, and relay this event to the target chain to unlock asset.
-		// TODO: update the weight
-		#[pallet::weight(0)]
+		#[pallet::weight(
+			<T as pallet::Config>::WeightInfo::dispatch_handle()
+			.saturating_add(149_643_000)   // send_minimal_message_worst_case fee
+		)]
 		#[frame_support::transactional]
 		pub fn dispatch_handle(origin: OriginFor<T>, input: Vec<u8>) -> DispatchResultWithPostInfo {
 			let caller = ensure_signed(origin)?;
@@ -108,9 +110,7 @@ pub mod pallet {
 			ensure!(input.len() >= 8, <Error<T>>::InvalidInput);
 			// Ensure that the user is mapping token factory contract
 			let factory = MappingFactoryAddress::<T>::get();
-			log::debug!("bear: --- the factory {:?}", factory);
 			let factory_id = <T as darwinia_evm::Config>::AddressMapping::into_account_id(factory);
-			log::debug!("bear: --- the factory id {:?}", factory_id);
 			ensure!(caller == factory_id, <Error<T>>::NotFactoryContract);
 
 			let burn_action = &sha3::Keccak256::digest(&BURN_ACTION)[0..4];
@@ -118,21 +118,26 @@ pub mod pallet {
 				log::debug!("bear: --- enter here");
 				let burn_info =
 					TokenBurnInfo::decode(&input[8..]).map_err(|_| Error::<T>::InvalidDecoding)?;
+
 				// Ensure the recipient is valid
 				ensure!(
 					burn_info.recipient.len() == 32,
 					<Error<T>>::InvalidAddressLen
 				);
+				log::debug!("bear: --- tag 1");
 
 				let fee = Self::transform_dvm_balance(burn_info.fee);
+				log::debug!("bear: --- tag 2");
 				if let Some(fee_account) = T::FeeAccount::get() {
 					// Since fee account will represent use to make a cross chain call, give fee to fee account here.
 					// the fee transfer path
 					// user -> mapping_token_factory(caller) -> fee_account -> fee_fund -> relayers
 					<T as Config>::RingCurrency::transfer(&caller, &fee_account, fee, KeepAlive)?;
+					log::debug!("bear: --- tag 3");
 				}
 
 				Self::burn_and_remote_unlock(fee, burn_info)?;
+				log::debug!("bear: --- tag 4");
 			} else {
 				log::trace!("No action match this input selector");
 			}
