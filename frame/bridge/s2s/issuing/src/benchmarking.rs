@@ -35,39 +35,42 @@ const SPEC_VERSION: u32 = 123;
 
 benchmarks! {
 	// dispatch handle benchmark
-	dispatch_handle {
-		let caller = <T as darwinia_evm::Config>::AddressMapping::into_account_id(
-			H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed88A").unwrap()
-		);
+	// dispatch_handle {
+	// 	let caller = <T as darwinia_evm::Config>::AddressMapping::into_account_id(
+	// 		H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed88A").unwrap()
+	// 	);
 
-		<T as Config>::RingCurrency::deposit_creating(&caller, U256::from(500).low_u128().unique_saturated_into());
-		log::debug!("bear: --- benchmark: the caller is {:?}", caller);
+	// 	<T as Config>::RingCurrency::deposit_creating(&caller, U256::from(500).low_u128().unique_saturated_into());
+	// 	log::debug!("bear: --- benchmark: the caller is {:?}", caller);
 
-		let mut input = vec![0; 4];
-		let mut burn_action = &sha3::Keccak256::digest(&BURN_ACTION)[0..4];
-		input.extend_from_slice(&mut burn_action);
+	// 	let mut input = vec![0; 4];
+	// 	let mut burn_action = &sha3::Keccak256::digest(&BURN_ACTION)[0..4];
+	// 	input.extend_from_slice(&mut burn_action);
 
-
-		let token_info = TokenBurnInfo::encode(
-			SPEC_VERSION,
-			10000,
-			// todo: confirm the token type
-			0,
-			H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed884").unwrap(),
-			H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed885").unwrap(),
-			H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed886").unwrap(),
-			vec![1; 32],
-			U256::from(250),
-			U256::from(10_000_000_000u128),
-		);
-		input.extend_from_slice(&token_info);
-	}:dispatch_handle(RawOrigin::Signed(caller), input)
+	// 	let token_info = TokenBurnInfo::encode(
+	// 		SPEC_VERSION,
+	// 		10000,
+	// 		// todo: confirm the token type
+	// 		0,
+	// 		H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed884").unwrap(),
+	// 		H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed885").unwrap(),
+	// 		H160::from_str("E1586e744b99bF8e4C981DfE4dD4369d6f8Ed886").unwrap(),
+	// 		vec![1; 32],
+	// 		U256::from(250),
+	// 		U256::from(10_000_000_000u128),
+	// 	);
+	// 	input.extend_from_slice(&token_info);
+	// }:dispatch_handle(RawOrigin::Signed(caller), input)
 
 	// remote register benchmark
-	// remote_register {
-	// 	let caller: T::AccountId = whitelisted_caller();
-	// 	let token = Token::Native(TokenInfo::new(H160::default(), None, None));
-	// }: remote_register(RawOrigin::Signed(caller), token)
+	remote_register {
+		let addr_bytes = array_bytes::hex2bytes_unchecked("0x8e13b96a9c9e3b1832f07935be76c2b331251e26445f520ad1c56b24477ed8dd");
+		let caller: T::AccountId = T::AccountId::decode(&mut &addr_bytes[..]).unwrap_or_default();
+
+		let register_token_address = H160::from_str("0000000000000000000000000000000000000002").unwrap();
+		let token = Token::Native(TokenInfo::new(register_token_address, None, None));
+
+	}: remote_register(RawOrigin::Signed(caller), token)
 
 	// // remote_issue
 	// remote_issue {

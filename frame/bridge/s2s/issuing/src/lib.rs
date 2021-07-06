@@ -148,13 +148,18 @@ pub mod pallet {
 		/// Before the token transfer, token should be created first
 		#[pallet::weight(0)]
 		pub fn remote_register(origin: OriginFor<T>, token: Token) -> DispatchResultWithPostInfo {
+			log::debug!("bear: --- remote register");
 			let user = ensure_signed(origin)?;
+			log::debug!("bear: --- step 1, user {:?}", user);
 			let backing = Self::verify_origin(&user)?;
+			log::debug!("bear: --- step 2, backing {:?}", backing);
 			let (token_type, token_info) = token
 				.token_info()
 				.map_err(|_| Error::<T>::InvalidTokenType)?;
+			log::debug!("bear: --- step 3");
 			let mut mapped_address = Self::mapped_token_address(backing, token_info.address)?;
 			ensure!(mapped_address == H160::zero(), "asset has been registered");
+			log::debug!("bear: --- step 4");
 
 			match token_info.option {
 				Some(option) => {
@@ -172,9 +177,11 @@ pub mod pallet {
 						token_info.address,
 					)
 					.map_err(|_| Error::<T>::InvalidEncodeERC20)?;
+					log::debug!("bear: --- step 5");
 
 					Self::transact_mapping_factory(input)?;
 					mapped_address = Self::mapped_token_address(backing, token_info.address)?;
+					log::debug!("bear: --- step 6");
 					Self::deposit_event(Event::TokenRegistered(
 						user,
 						backing,
@@ -194,27 +201,36 @@ pub mod pallet {
 			token: Token,
 			recipient: H160,
 		) -> DispatchResultWithPostInfo {
+			log::debug!("bear: --- enter remote issue");
 			let user = ensure_signed(origin)?;
+			log::debug!("bear: --- user {:?}", user);
 			// the s2s message relay has been verified that the message comes from the backing chain with the
 			// chainID and backing sender address.
 			// here only we need is to check the sender is root
 			let backing = Self::verify_origin(&user)?;
+			log::debug!("bear: --- backing {:?}", backing);
 
 			let (_, token_info) = token
 				.token_info()
 				.map_err(|_| Error::<T>::InvalidTokenType)?;
 
+			log::debug!("bear: --- flag 1");
 			let mapped_address = Self::mapped_token_address(backing, token_info.address)?;
 
+			log::debug!("bear: --- flag 2");
 			ensure!(
 				mapped_address != H160::zero(),
 				"asset has not been registered"
 			);
+			log::debug!("bear: --- flag 3");
 			// Redeem process
 			if let Some(value) = token_info.value {
+				log::debug!("bear: --- flag 4");
 				let input = mtf::encode_cross_receive(mapped_address, recipient, value)
 					.map_err(|_| Error::<T>::InvalidMintEncoding)?;
+				log::debug!("bear: --- flag 5");
 				Self::transact_mapping_factory(input)?;
+				log::debug!("bear: --- flag 6");
 				Self::deposit_event(Event::TokenIssued(
 					backing,
 					mapped_address,
@@ -368,6 +384,7 @@ impl<T: Config> Pallet<T> {
 		let source_root = source_root_converted_id::<T::AccountId, T::BridgedAccountIdConverter>(
 			T::BridgedChainId::get(),
 		);
+		log::debug!("bear: --- source_root, {:?}", source_root);
 		ensure!(account == &source_root, Error::<T>::InvalidOrigin);
 		Ok(T::ToEthAddressT::into_ethereum_id(account))
 	}
